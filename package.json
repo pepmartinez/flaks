@@ -1,0 +1,30 @@
+{
+  "name": "flaks",
+  "version": "0.0.0",
+  "dependencies": {
+    "async": "~3.1.0",
+    "body-parser": "~1.18.3",
+    "cascade-config": "1.4.5",
+    "debug": "~4.1.1",
+    "express": "~4.17.1",
+    "express-basic-auth": "~1.2.0",
+    "lodash": "~4.17.14",
+    "@promster/express": "~3.2.0",
+    "prom-client": "~11.5.3",
+    "morgan": "~1.9.1",
+    "http-shutdown": "~1.2.1",
+    "fastest-validator": "~0.6.17",
+    "http-proxy": "~1.18.0",
+    "winston": "~3.2.1",
+    "winston-log-space": "~1.0.3"
+  },
+  "devDependencies": {
+    "mocha": "~6.1.4",
+    "should": "~13.2.3",
+    "supertest": "~4.0.2"
+  },
+  "scripts": {
+    "test": "mocha --reporter spec --check-leaks --no-timeouts --exit test/",
+    "test-with-coverage": "nyc --reporter=text -- mocha --reporter spec --check-leaks --no-timeouts --exit test/"
+  }
+}
