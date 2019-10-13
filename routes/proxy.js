@@ -1,9 +1,9 @@
 const express =   require ('express');
-const httpProxy = require ('http-proxy');
+const HttpProxy = require ('../lib/HttpProxy');
 
 
 function get_router (config, context, done) {
-  const proxy = httpProxy.createProxyServer ({
+  const proxy = new HttpProxy ({
     xfwd: true
   });
 
@@ -11,7 +11,7 @@ function get_router (config, context, done) {
 
   router.all ('/:ns/*', (req, res) => {
     proxy.web (req, res, {
-      target: 'http://localhost:8080'
+      target: 'http://localhost:8090'
     });
   });
 
