@@ -1,10 +1,11 @@
-var express =    require ('express');
-var bodyParser = require ('body-parser');
-var async =      require ('async');
-var Log =        require ('winston-log-space');
-var path =       require ('path');
-var morgan =     require ('morgan');
-var promster =   require ('@promster/express');
+var express =      require ('express');
+var bodyParser =   require ('body-parser');
+var async =        require ('async');
+var Log =          require ('winston-log-space');
+var path =         require ('path');
+var morgan =       require ('morgan');
+var promster =     require ('@promster/express');
+var addRequestId = require ('express-request-id');
 
 
 module.exports = function  (opts, context, done) {
@@ -18,6 +19,8 @@ module.exports = function  (opts, context, done) {
   if (opts.http && opts.http.trust_proxy) {
     app.set ('trust proxy', opts.http && opts.http.trust_proxy);
   }
+
+  app.use(addRequestId ());
 
   app.use (morgan ('combined', { stream: { write: message => access_log.info (message.trim ()) }}));
 
