@@ -1,10 +1,13 @@
-var async = require ('async');
-var _ =     require ('lodash');
-var Log =   require ('winston-log-space');
+const async = require ('async');
+const _ =     require ('lodash');
+const Log =   require ('winston-log-space');
 
-var log = Log.logger ('UberApp');
+const Agents =    require ('./lib/Agents');
+const HttpProxy = require ('./lib/HttpProxy');
 
+const log = Log.logger ('UberApp');
 
+////////////////////////////////////////////////////////////////
 function __shutdown__ (context) {
   log.info ('http server shutdown starts...');
 
@@ -20,7 +23,21 @@ function __shutdown__ (context) {
       else {
         cb ();
       }
-    }
+    },
+    cb => {
+      if (context.proxy) {
+        log.info ('shutting down http proxy engine');
+        context.proxy.close ();
+      }
+      cb ();
+    },
+    cb => {
+      if (context.agents) {
+        log.info ('destroying http(s) agents');
+        context.agents.destroy ();
+      }
+      cb ();
+    },
   ], () => {
     log.info ('instance clean-shutdown completed. Exiting...');
 //          require('active-handles').print();
@@ -29,10 +46,27 @@ function __shutdown__ (context) {
 }
 
 
+/////////////////////////////////////////////////////////////////
 function uber_app (config, cb) {
   let context = {config};
 
   async.series ([
+    cb => {
+      // create Agents store
+      context.agents = new Agents (config);
+      log.info ('agents initialized');
+      cb ();
+    },
+    cb => {
+      // create http proxy engine
+      context.proxy = new HttpProxy ({
+        xfwd:         true,
+        ignorePath:   true,
+        timeout:      _.get (config, 'net.incoming_timeout', 75000),
+        proxyTimeout: _.get (config, 'net.outgoing_timeout', 50000),
+      });
+      cb ();
+    },
     cb => {
       // init app
       var App = require ('./app');

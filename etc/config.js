@@ -1,23 +1,23 @@
 
 module.exports = {
   listen_port: 8080,
+  agents : {
+  },
   http: {
     trust_proxy: ['192.168.1.0/24'],
     wiredump: true,
-    agents: {
-    },
     routes: {
       '/a/b/c': {
         target: 'http://xana:8090/a',
-        agent: 'string|object'
+        agent: 'default'
       },
       '/b/(.*)' : {
         target: 'http://xana:8090/hawks/$1',
-        agent: 'string|object'
+        agent: 'default'
       },
       '/b/c/d/(.*)' : {
         target: 'http://xana:8090/other/$1',
-        agent: 'string|object'
+        agent: 'default'
       }
     }
   },

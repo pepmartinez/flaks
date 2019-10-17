@@ -14,7 +14,31 @@ Log.init (function (err) {
   var cconf = new CConf ();
 
   var _defaults = {
-    listen_port: 8080
+    listen_port: 8080,
+    agents: {
+      http: {
+        default : {
+          keepAlive: true,
+          keepAliveMsecs: 10000,
+          maxSockets: 1024,
+          maxFreeSockets: 256,
+          timeout: 120000
+        }
+      },
+      https: {
+        default : {
+          keepAlive: true,
+          keepAliveMsecs: 10000,
+          maxSockets: 1024,
+          maxFreeSockets: 256,
+          timeout: 120000
+        }
+      },
+    },
+    net: {
+      incoming_timeout: 120000,
+      outgoing_timeout: 110000
+    }
   };
 
   cconf
