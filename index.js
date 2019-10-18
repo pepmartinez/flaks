@@ -74,8 +74,8 @@ Log.init (function (err) {
         }
 
         // set up shutdown hooks
-        process.on ('SIGINT',  () => context.shutdown ());
-        process.on ('SIGTERM', () => context.shutdown ());
+        process.on ('SIGINT',  () => context.shutdown (true));
+        process.on ('SIGTERM', () => context.shutdown (true));
 
         log.info ('instance ready');
       });

@@ -9,7 +9,7 @@ const log = Log.logger ('main:uber-app');
 
 
 ////////////////////////////////////////////////////////////////
-function __shutdown__ (context) {
+function __shutdown__ (context, doexit, cb) {
   log.info ('http server shutdown starts...');
 
   async.series ([
@@ -26,6 +26,15 @@ function __shutdown__ (context) {
       }
     },
     cb => {
+      // stop promster
+      if (context.app && context.app.locals.Prometheus) {
+        var client = context.app.locals.Prometheus;
+        clearInterval(client.collectDefaultMetrics());
+        client.register.clear();
+      }
+      cb ();
+    },
+    cb => {
       if (context.proxy) {
         log.info ('shutting down http proxy engine');
         context.proxy.close ();
@@ -40,9 +49,16 @@ function __shutdown__ (context) {
       cb ();
     },
   ], () => {
-    log.info ('instance clean-shutdown completed. Exiting...');
+    log.info ('instance clean-shutdown completed');
 //          require('active-handles').print();
-    process.exit (0);
+
+    if (doexit) {
+      log.info ('Exiting...');
+      process.exit (0);
+    }
+    else {
+      if (cb) cb ();
+    }
   });
 }
 
@@ -75,7 +91,7 @@ function uber_app (config, cb) {
       });
     }
   ], err => {
-    context.shutdown = () => __shutdown__ (context);
+    context.shutdown = (doexit, cb) => __shutdown__ (context, doexit, cb);
     cb (err, context);
   });
 }
