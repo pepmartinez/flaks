@@ -2,10 +2,11 @@ const async = require ('async');
 const _ =     require ('lodash');
 const Log =   require ('winston-log-space');
 
-const Agents =    require ('./lib/Agents');
-const HttpProxy = require ('./lib/HttpProxy');
+const Agents = require ('./lib/Agents');
+const Proxy =  require ('./lib/Proxy');
 
-const log = Log.logger ('UberApp');
+const log = Log.logger ('main:uber-app');
+
 
 ////////////////////////////////////////////////////////////////
 function __shutdown__ (context) {
@@ -53,18 +54,13 @@ function uber_app (config, cb) {
   async.series ([
     cb => {
       // create Agents store
-      context.agents = new Agents (config);
+      context.agents = new Agents (config, context);
       log.info ('agents initialized');
       cb ();
     },
     cb => {
-      // create http proxy engine
-      context.proxy = new HttpProxy ({
-        xfwd:         true,
-        ignorePath:   true,
-        timeout:      _.get (config, 'net.incoming_timeout', 75000),
-        proxyTimeout: _.get (config, 'net.outgoing_timeout', 50000),
-      });
+      context.proxy = new Proxy (config, context);
+      log.info ('proxy initialized');
       cb ();
     },
     cb => {

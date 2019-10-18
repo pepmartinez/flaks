@@ -9,7 +9,7 @@ var addRequestId = require ('express-request-id');
 
 
 module.exports = function  (opts, context, done) {
-  var log =        Log.logger ('app');
+  var log =        Log.logger ('main:app');
   var access_log = Log.logger ('access');
 
   var routes_proxy = require ('./routes/proxy');

@@ -10,7 +10,7 @@ Log.init (function (err) {
     return;
   }
 
-  var log = Log.logger ('main');
+  var log = Log.logger ('main:main');
   var cconf = new CConf ();
 
   var _defaults = {
