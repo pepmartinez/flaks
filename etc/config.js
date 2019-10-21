@@ -5,7 +5,7 @@ module.exports = {
   },
   http: {
     trust_proxy: ['192.168.1.0/24'],
-    wiredump: true,
+    wirelog: true,
     routes: {
       '/a/b/c': {
         target: 'http://xana:8090/a',

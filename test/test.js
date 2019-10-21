@@ -172,7 +172,7 @@ describe('flaks', () => {
             'content-type': 'text/plain',
             'user-agent': 'node-superagent/3.8.3',
             'accept-encoding': 'gzip, deflate',
-            host: /127.0.0.1:.+/
+            host: /xana:.+/
           });
 
           tserv.close ();
