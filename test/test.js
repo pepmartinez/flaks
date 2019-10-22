@@ -160,7 +160,7 @@ describe('flaks', () => {
 
           res.body.q.should.eql ({ a: '1', b: '666' });
           res.body.u.should.eql ('/hawks/h?a=1&b=666');
-          res.body.b.should.eql ('ddfgdgdgdgdf')
+          res.body.b.should.eql ('ddfgdgdgdgdf');
           res.body.h.should.match ({
             'x-forwarded-host': /^127.0.0.1:.+/,
             'x-forwarded-proto': 'http',
