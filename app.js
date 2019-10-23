@@ -12,7 +12,8 @@ module.exports = function  (opts, context, done) {
   var log =        Log.logger ('main:app');
   var access_log = Log.logger ('access');
 
-  var routes_proxy = require ('./routes/proxy');
+  var routes_proxy =  require ('./routes/proxy');
+  var routes_status = require ('./routes/status');
 
   var app = express();
 
@@ -39,6 +40,11 @@ module.exports = function  (opts, context, done) {
   app.use (bodyParser.json ());
 
   async.series ([
+    cb => routes_status (opts, context, (err, router) => {
+      if (err) return cb (err);
+      app.use ('/status', router);
+      cb();
+    }),
     cb => routes_proxy (opts, context, (err, router) => {
       if (err) return cb (err);
       app.use ('/', router);
