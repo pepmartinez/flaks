@@ -27,10 +27,9 @@ function __shutdown__ (context, doexit, cb) {
     },
     cb => {
       // stop promster
-      if (context.app && context.app.locals.Prometheus) {
-        var client = context.app.locals.Prometheus;
-        clearInterval(client.collectDefaultMetrics());
-        client.register.clear();
+      if (context.promster) {
+        clearInterval(context.promster.collectDefaultMetrics());
+        context.promster.register.clear();
       }
       cb ();
     },
@@ -86,6 +85,7 @@ function uber_app (config, cb) {
       App (config, context, (err, app) => {
         if (err) return cb (err);
         context.app = app;
+        context.promster = context.app.locals.Prometheus;
         log.info ('app initialized');
         cb ();
       });
