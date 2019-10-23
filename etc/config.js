@@ -6,6 +6,7 @@ module.exports = {
   http: {
     trust_proxy: ['192.168.1.0/24'],
     wirelog: true,
+    introspect: true,
     routes: {
       '/a/b/c': {
         target: 'http://xana:8090/a',
@@ -17,6 +18,10 @@ module.exports = {
       },
       '/b/c/d/(.*)' : {
         target: 'http://xana:8090/other/$1',
+        agent: 'default'
+      },
+      '/c/(.*)' : {
+        target: 'http://xana:9099/other/$1',
         agent: 'default'
       }
     }

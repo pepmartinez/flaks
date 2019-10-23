@@ -17,7 +17,8 @@
     "http-proxy": "~1.18.0",
     "winston": "~3.2.1",
     "winston-log-space": "~1.0.3",
-    "express-request-id": "~1.4.1"
+    "express-request-id": "~1.4.1",
+    "CBuffer": "~2.0.0"
   },
   "devDependencies": {
     "mocha": "~6.1.4",
