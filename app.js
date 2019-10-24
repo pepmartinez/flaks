@@ -28,7 +28,11 @@ module.exports = function  (opts, context, done) {
   app.use (promster.createMiddleware({
     app: app,
     options: {
-      normalizePath: (full_path, {req, res}) => (req.route ? path.join (req.baseUrl, req.route.path) : full_path.split ('?')[0])
+      normalizePath: (full_path, {req, res}) => {
+        if (req._upstream_route) return req._upstream_route;
+        if (req.route) return path.join (req.baseUrl, req.route.path);
+        return full_path.split ('?')[0];
+      }
     }
   }));
 
