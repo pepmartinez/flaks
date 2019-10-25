@@ -66,6 +66,10 @@ Log.init (function (err) {
             log.info ('app listening at %s', listen_port);
             cb ();
           });
+        },
+        cb => {
+          require ('@promster/express').signalIsUp();
+          cb ();
         }
       ], err => {  // all done
         if (err) {

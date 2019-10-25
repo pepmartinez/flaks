@@ -14,6 +14,10 @@ function __shutdown__ (context, doexit, cb) {
 
   async.series ([
     cb => {
+      require ('@promster/express').signalIsNotUp();
+      cb ();
+    },
+    cb => {
       if (context.server) {
         log.info ('shutting down http server');
         context.server.shutdown (() => {
@@ -89,7 +93,9 @@ function uber_app (config, cb) {
         log.info ('app initialized');
         cb ();
       });
-    }
+    },
+    // post-ctor init
+    cb => context.proxy.init (cb)
   ], err => {
     context.shutdown = (doexit, cb) => __shutdown__ (context, doexit, cb);
     cb (err, context);
