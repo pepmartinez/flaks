@@ -4,26 +4,9 @@ module.exports = {
   agents : {
   },
   http: {
-    trust_proxy: ['192.168.1.0/24'],
-    wirelog: true,
-    introspect: true,
+    wirelog: false,
+    introspect: false,
     routes: {
-      '/a/b/c': {
-        target: 'http://xana:8090/a',
-        agent: 'default'
-      },
-      '/b/(.*)' : {
-        target: 'http://xana:8090/hawks/$1',
-        agent: 'default'
-      },
-      '/b/c/d/(.*)' : {
-        target: 'http://xana:8090/other/$1',
-        agent: 'default'
-      },
-      '/c/(.*)' : {
-        target: 'http://xana:9099/other/$1',
-        agent: 'default'
-      }
     }
   },
   net: {
