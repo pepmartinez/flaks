@@ -3,11 +3,7 @@ module.exports = {
   listen_port: 8080,
   agents : {
   },
-  http: {
-    wirelog: false,
-    introspect: false,
-    routes: {
-    }
+  vhosts: {
   },
   net: {
     incoming_timeout: 30000,

@@ -8,8 +8,10 @@ function get_router (config, context, done) {
 
   const router = express.Router();
   const proxy = context.proxy;
+  const agents = context.agents;
 
-  router.get ('/proxy', (req, res) => res.send (proxy.status ()));
+  router.get ('/proxy',  (req, res) => res.send (proxy.status ()));
+  router.get ('/agents', (req, res) => res.send (agents.status ()));
 
   done (null, router);
 }
