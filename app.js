@@ -41,12 +41,10 @@ module.exports = function  (opts, context, done) {
     res.end (promster.getSummary());
   });
 
-  app.use (bodyParser.json ());
-
   async.series ([
     cb => routes_status (opts, context, (err, router) => {
       if (err) return cb (err);
-      app.use ('/status', router);
+      app.use ('/status', bodyParser.json (), router);
       cb();
     }),
     cb => routes_proxy (opts, context, (err, router) => {
