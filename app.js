@@ -23,7 +23,9 @@ module.exports = function  (opts, context, done) {
 
   app.use(addRequestId ());
 
-  app.use (morgan ('combined', { stream: { write: message => access_log.info (message.trim ()) }}));
+  app.use (morgan ('combined', {
+    stream: { write: message => access_log.info (message.trim ()) }
+  }));
 
   app.use (promster.createMiddleware({
     app: app,
