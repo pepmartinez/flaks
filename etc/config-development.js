@@ -4,7 +4,7 @@ module.exports = {
   vhosts: {
     default: {
       http: {
-        wirelog: true,
+        wirelog: false,
         introspect: true,
         routes: {
           '/a/b/c': {

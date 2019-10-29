@@ -21,36 +21,38 @@ function _get_me_an_app () {
 
 
 const config = {
-  agents : {
-  },
-  http: {
-    trust_proxy: ['192.168.1.0/24'],
-    routes: {
-      '/a/b/c': {
-        target: 'http://xana:28090/a',
-        agent: 'default'
+  agents: {},
+  vhosts: {
+    default: {
+      http: {
+        routes: {
+          "/a/b/c": {
+            target: "http://xana:28090/a",
+            agent: "default"
+          },
+          "/b/(.*)": {
+            target: "http://xana:28090/hawks/$1",
+            agent: "default"
+          },
+          "/b/c/d/(.*)": {
+            target: "http://xana:28090/other/$1",
+            agent: "default"
+          },
+          "/c/nowhere/(.*)": {
+            target: "http://xana:666/other/$1",
+            agent: "default"
+          },
+          "/d/noname/(.*)": {
+            target: "http://noexistent-host.org:666/other/$1",
+            agent: "default"
+          }
+        }
       },
-      '/b/(.*)' : {
-        target: 'http://xana:28090/hawks/$1',
-        agent: 'default'
-      },
-      '/b/c/d/(.*)' : {
-        target: 'http://xana:28090/other/$1',
-        agent: 'default'
-      },
-      '/c/nowhere/(.*)' : {
-        target: 'http://xana:666/other/$1',
-        agent: 'default'
-      },
-      '/d/noname/(.*)' : {
-        target: 'http://noexistent-host.org:666/other/$1',
-        agent: 'default'
+      net: {
+        incoming_timeout: 3000,
+        outgoing_timeout: 2000
       }
     }
-  },
-  net: {
-    incoming_timeout: 3000,
-    outgoing_timeout: 2000
   }
 };
 
