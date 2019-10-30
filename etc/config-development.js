@@ -1,5 +1,19 @@
+var fs = require ('fs');
+
 module.exports = {
   agents : {
+    https: {
+      dolkaren: {
+        keepAlive: true,
+        keepAliveMsecs: 10000,
+        maxSockets: 1024,
+        maxFreeSockets: 256,
+        timeout: 120000,
+        key:   fs.readFileSync('playground/ca/client1-key.pem'),
+        cert:  fs.readFileSync('playground/ca/client1-crt.pem'),
+        rejectUnauthorized: false,
+      }
+    }
   },
   vhosts: {
     default: {
@@ -26,6 +40,10 @@ module.exports = {
           '/g/(.*)' : {
             target: 'https://www.google.com/$1',
             agent: 'default'
+          },
+          '/s/(.*)' : {
+            target: 'https://localhost:8091/$1',
+            agent: 'dolkaren'
           }
         }
       },
