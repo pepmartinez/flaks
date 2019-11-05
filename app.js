@@ -3,14 +3,14 @@ var bodyParser =   require ('body-parser');
 var async =        require ('async');
 var Log =          require ('winston-log-space');
 var path =         require ('path');
-var morgan =       require ('morgan');
 var promster =     require ('@promster/express');
 var addRequestId = require ('express-request-id');
 
+var AccessLog =    require ('./lib/AccessLog');
+
 
 module.exports = function  (opts, context, done) {
-  var log =        Log.logger ('main:app');
-  var access_log = Log.logger ('access');
+  var log = Log.logger ('main:app');
 
   var routes_proxy =  require ('./routes/proxy');
   var routes_status = require ('./routes/status');
@@ -21,11 +21,8 @@ module.exports = function  (opts, context, done) {
     app.set ('trust proxy', opts.http && opts.http.trust_proxy);
   }
 
-  app.use(addRequestId ());
-
-  app.use (morgan ('combined', {
-    stream: { write: message => access_log.info (message.trim ()) }
-  }));
+  app.use (addRequestId ());
+  app.use (AccessLog (opts));
 
   app.use (promster.createMiddleware({
     app: app,

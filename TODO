@@ -6,4 +6,3 @@
 * extract and serve realtime metrics from prom-client?
 * get introspect from cbuffer in reverse order (newer first)
 * use better discr on wirelog and introspect
-* more ingo on morgan's access log (rtt, headers...)
