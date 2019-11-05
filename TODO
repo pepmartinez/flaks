@@ -5,4 +5,8 @@
 * review trust-proxy use
 * extract and serve realtime metrics from prom-client?
 * get introspect from cbuffer in reverse order (newer first)
-* use better discr on wirelog and introspect
+* use better discr on wirelog and introspect (static-eval?)
+* add ctrl endpoint
+* add health/ready endpoint
+
+* complete store of req-res body on introspect

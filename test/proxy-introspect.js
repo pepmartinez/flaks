@@ -162,8 +162,8 @@ describe("introspection", () => {
                     req: {
                       method: "POST",
                       url: "http://xana:666/other/to/go",
-                      headers: {},
-                      "x-forwarded-host": /.+/,
+                      headers: {
+                        "x-forwarded-host": /.+/,
                       "x-forwarded-proto": "http",
                       "x-forwarded-port": /.+/,
                       "x-forwarded-for": /.+/,
@@ -173,6 +173,7 @@ describe("introspection", () => {
                       "user-agent": /.+/,
                       host: "xana:666",
                       "x-request-id": /.+/
+                      },
                     },
                     err: {
                       errno: "ECONNREFUSED",
@@ -193,7 +194,7 @@ describe("introspection", () => {
                     req: {
                       method: "POST",
                       url: "http://noexistent-host.org:666/other/to/go",
-                      headers: {},
+                      headers: {
                       "x-forwarded-host": /.+/,
                       "x-forwarded-proto": "http",
                       "x-forwarded-port": /.+/,
@@ -204,6 +205,7 @@ describe("introspection", () => {
                       "user-agent": /.+/,
                       host: "noexistent-host.org:666",
                       "x-request-id": /.+/
+                      }
                     },
                     err: {
                       errno: "ENOTFOUND",
@@ -225,7 +227,7 @@ describe("introspection", () => {
                     req: {
                       method: "POST",
                       url: "http://xana:28090/hawks/h?a=1&b=666",
-                      headers: {},
+                      headers: {
                       "x-forwarded-host": /.+/,
                       "x-forwarded-proto": "http",
                       "x-forwarded-port": /.+/,
@@ -236,6 +238,7 @@ describe("introspection", () => {
                       "content-type": "text/plain",
                       "user-agent": /.+/,
                       host: "xana:28090"
+                      }
                     },
                     res: {
                       ver: "1.1",
@@ -258,7 +261,7 @@ describe("introspection", () => {
                     req: {
                       method: "POST",
                       url: "http://xana:28090/hawks/h?a=1&b=666",
-                      headers: {},
+                      headers: {
                       "x-forwarded-host": /.+/,
                       "x-forwarded-proto": "http",
                       "x-forwarded-port": /.+/,
@@ -269,6 +272,7 @@ describe("introspection", () => {
                       "content-type": "text/plain",
                       "user-agent": /.+/,
                       host: "xana:28090"
+                      }
                     },
                     res: {
                       ver: "1.1",
@@ -353,7 +357,7 @@ describe("introspection", () => {
                     req: {
                       method: "POST",
                       url: "http://xana:666/other/to/go",
-                      headers: {},
+                      headers: {
                       "x-forwarded-host": /.+/,
                       "x-forwarded-proto": "http",
                       "x-forwarded-port": /.+/,
@@ -364,6 +368,7 @@ describe("introspection", () => {
                       "user-agent": /.+/,
                       host: "xana:666",
                       "x-request-id": /.+/
+                      }
                     },
                     err: {
                       errno: "ECONNREFUSED",
@@ -384,7 +389,7 @@ describe("introspection", () => {
                     req: {
                       method: "POST",
                       url: "http://noexistent-host.org:666/other/to/go",
-                      headers: {},
+                      headers: {
                       "x-forwarded-host": /.+/,
                       "x-forwarded-proto": "http",
                       "x-forwarded-port": /.+/,
@@ -395,6 +400,7 @@ describe("introspection", () => {
                       "user-agent": /.+/,
                       host: "noexistent-host.org:666",
                       "x-request-id": /.+/
+                      }
                     },
                     err: {
                       errno: "ENOTFOUND",
@@ -416,7 +422,7 @@ describe("introspection", () => {
                     req: {
                       method: "POST",
                       url: "http://xana:28090/hawks/h?a=1&b=666",
-                      headers: {},
+                      headers: {
                       "x-forwarded-host": /.+/,
                       "x-forwarded-proto": "http",
                       "x-forwarded-port": /.+/,
@@ -427,6 +433,7 @@ describe("introspection", () => {
                       "content-type": "text/plain",
                       "user-agent": /.+/,
                       host: "xana:28090"
+                      }
                     },
                     res: {
                       ver: "1.1",
@@ -449,7 +456,7 @@ describe("introspection", () => {
                     req: {
                       method: "POST",
                       url: "http://xana:28090/hawks/h?a=1&b=666",
-                      headers: {},
+                      headers: {
                       "x-forwarded-host": /.+/,
                       "x-forwarded-proto": "http",
                       "x-forwarded-port": /.+/,
@@ -460,6 +467,7 @@ describe("introspection", () => {
                       "content-type": "text/plain",
                       "user-agent": /.+/,
                       host: "xana:28090"
+                      }
                     },
                     res: {
                       ver: "1.1",

@@ -19,7 +19,7 @@ module.exports = {
     default: {
       http: {
         wirelog: false,
-        introspect: true,
+        introspect: false,
         routes: {
           '/a/b/c': {
             target: 'http://xana:8090/a',
@@ -52,11 +52,11 @@ module.exports = {
     },
     'localhost.localdomain': {
       http: {
-        wirelog: true,
+        wirelog: (opts, req) => (req.headers.aaaa == '1'),
         introspect: true,
         routes: {
-          '/z': {
-            target: 'http://xana:8090/z',
+          '/z(.*)': {
+            target: 'http://xana:8090/z/$1',
             agent: 'default'
           },
           '/w/(.*)': {
