@@ -15,7 +15,7 @@ app.all ('*', (req, res) => {
     h: req.headers,
     u: req.url,
     b: req.body,
-    c: req.socket.getPeerCertificate().subject,
+    c: (req.socket.getPeerCertificate ? req.socket.getPeerCertificate().subject : null),
     a: req.client.authorized
   });
 });
