@@ -149,8 +149,8 @@ describe("introspection", () => {
         ],
         err => {
           if (err) return done(err);
+//          console.log (require('util').inspect (context.proxy.status (true), {depth: null, colors: true}));
 
-          //          console.log (require('util').inspect (context.proxy.status (), {depth: null, colors: true}));
           context.proxy.status(true).should.match({
             default: {
               "http://xana:666/other/$1": {
@@ -174,6 +174,7 @@ describe("introspection", () => {
                       host: "xana:666",
                       "x-request-id": /.+/
                       },
+                      body: 'ddfgdgdgdgdf'
                     },
                     err: {
                       errno: "ECONNREFUSED",
@@ -205,7 +206,8 @@ describe("introspection", () => {
                       "user-agent": /.+/,
                       host: "noexistent-host.org:666",
                       "x-request-id": /.+/
-                      }
+                      },
+                      body: 'ddfgdgdgdgdf'
                     },
                     err: {
                       errno: "ENOTFOUND",
@@ -238,7 +240,8 @@ describe("introspection", () => {
                       "content-type": "text/plain",
                       "user-agent": /.+/,
                       host: "xana:28090"
-                      }
+                      },
+                      body: 'ddfgdgdgdgdf'
                     },
                     res: {
                       ver: "1.1",
@@ -251,7 +254,8 @@ describe("introspection", () => {
                         etag: /.+/,
                         date: /.+/,
                         connection: "close"
-                      }
+                      },
+                      body:/.+/
                     }
                   },
                   {
@@ -272,7 +276,8 @@ describe("introspection", () => {
                       "content-type": "text/plain",
                       "user-agent": /.+/,
                       host: "xana:28090"
-                      }
+                      },
+                      body: 'ddfgdgdgdgdf'
                     },
                     res: {
                       ver: "1.1",
@@ -285,7 +290,8 @@ describe("introspection", () => {
                         etag: /.+/,
                         date: /.+/,
                         connection: "close"
-                      }
+                      },
+                      body:/.+/
                     }
                   }
                 ]
@@ -344,8 +350,8 @@ describe("introspection", () => {
         ],
         err => {
           if (err) return done(err);
+//          console.log (require('util').inspect (context.proxy.status (true), {depth: null, colors: true}));
 
-          //          console.log (require('util').inspect (context.proxy.status (), {depth: null, colors: true}));
           context.proxy.status(true).should.match({
             default: {
               "http://xana:666/other/$1": {
@@ -368,7 +374,8 @@ describe("introspection", () => {
                       "user-agent": /.+/,
                       host: "xana:666",
                       "x-request-id": /.+/
-                      }
+                      },
+                      body: 'ddfgdgdgdgdf'
                     },
                     err: {
                       errno: "ECONNREFUSED",
@@ -400,7 +407,8 @@ describe("introspection", () => {
                       "user-agent": /.+/,
                       host: "noexistent-host.org:666",
                       "x-request-id": /.+/
-                      }
+                      },
+                      body: 'ddfgdgdgdgdf'
                     },
                     err: {
                       errno: "ENOTFOUND",
@@ -433,7 +441,8 @@ describe("introspection", () => {
                       "content-type": "text/plain",
                       "user-agent": /.+/,
                       host: "xana:28090"
-                      }
+                      },
+                      body: 'ddfgdgdgdgdf'
                     },
                     res: {
                       ver: "1.1",
@@ -446,7 +455,8 @@ describe("introspection", () => {
                         etag: /.+/,
                         date: /.+/,
                         connection: "keep-alive"
-                      }
+                      },
+                      body:/.+/
                     }
                   },
                   {
@@ -467,7 +477,8 @@ describe("introspection", () => {
                       "content-type": "text/plain",
                       "user-agent": /.+/,
                       host: "xana:28090"
-                      }
+                      },
+                      body: 'ddfgdgdgdgdf'
                     },
                     res: {
                       ver: "1.1",
@@ -480,7 +491,8 @@ describe("introspection", () => {
                         etag: /.+/,
                         date: /.+/,
                         connection: "keep-alive"
-                      }
+                      },
+                      body:/.+/
                     }
                   }
                 ]

@@ -43,7 +43,11 @@ const config = {
           "/d/noname/(.*)": {
             target: "http://noexistent-host.org:666/other/$1",
             agent: "default"
-          }
+          },
+          "/e/(.*)": {
+            target: "http://xana:28090/sonics?what=$1",
+            agent: "default"
+          },
         }
       },
       net: {
@@ -169,4 +173,115 @@ describe("Simple Routes, no agents", () => {
         });
     });
   });
+
+  it("proxies querystring ok if not modified", done => {
+    flaks(config, (err, context) => {
+      if (err) return done(err);
+
+      let target = _get_me_an_app();
+      let tserv = target.listen(28090);
+
+      request(context.app)
+        .get("/b/h")
+        .query({ a: 1, b: "666" })
+        .send("ddfgdgdgdgdf")
+        .set({
+          "x-request-id": "qwertyuiop"
+        })
+        .type("text")
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+
+          res.body.q.should.eql({ a: "1", b: "666" });
+          res.body.u.should.eql("/hawks/h?a=1&b=666");
+
+          tserv.close();
+          context.shutdown(false, done);
+        });
+    });
+  });
+
+  it("proxies ok if qstring is modified/added", done => {
+    flaks(config, (err, context) => {
+      if (err) return done(err);
+
+      let target = _get_me_an_app();
+      let tserv = target.listen(28090);
+
+      request(context.app)
+        .get("/e/hello")
+        .send("ddfgdgdgdgdf")
+        .set({
+          "x-request-id": "qwertyuiop"
+        })
+        .type("text")
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+
+          res.body.q.should.eql({ what: 'hello'});
+          res.body.u.should.eql("/sonics?what=hello");
+
+          tserv.close();
+          context.shutdown(false, done);
+        });
+    });
+  });
+
+  it("proxies querystring ok if modified", done => {
+    flaks(config, (err, context) => {
+      if (err) return done(err);
+
+      let target = _get_me_an_app();
+      let tserv = target.listen(28090);
+
+      request(context.app)
+        .get("/e/hello")
+        .query({ a: 1, b: "666" })
+        .send("ddfgdgdgdgdf")
+        .set({
+          "x-request-id": "qwertyuiop"
+        })
+        .type("text")
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+
+          res.body.q.should.eql({ what: 'hello', a: "1", b: "666" });
+          res.body.u.should.eql("/sonics?what=hello&a=1&b=666");
+
+          tserv.close();
+          context.shutdown(false, done);
+        });
+    });
+  });
+
+  it("proxies url ok if not qstring passed", done => {
+    flaks(config, (err, context) => {
+      if (err) return done(err);
+
+      let target = _get_me_an_app();
+      let tserv = target.listen(28090);
+
+      request(context.app)
+        .get("/b/h")
+        .send("ddfgdgdgdgdf")
+        .set({
+          "x-request-id": "qwertyuiop"
+        })
+        .type("text")
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+
+          res.body.q.should.eql({});
+          res.body.u.should.eql("/hawks/h");
+
+          tserv.close();
+          context.shutdown(false, done);
+        });
+    });
+  });
+
 });

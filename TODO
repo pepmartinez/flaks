@@ -2,11 +2,11 @@
 * add some regex-rewrite covering qstring (at least on dst)
 * better info on Agents.status ?
 * more metrics?
-* review trust-proxy use
 * extract and serve realtime metrics from prom-client?
 * get introspect from cbuffer in reverse order (newer first)
 * use better discr on wirelog and introspect (static-eval?)
 * add ctrl endpoint
+  + wirelog
+  + introspection
+  + full API on all vhosts?
 * add health/ready endpoint
-
-* complete store of req-res body on introspect
