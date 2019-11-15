@@ -45,7 +45,7 @@ Log.init (function (err) {
   .obj (_defaults)
   .env ()
   .file(__dirname + '/etc/config.js')
-  .file(__dirname + '/etc/config-{env}.js')
+  .file(__dirname + '/etc/config-{NODE_ENV:development}.js')
   .env ()
   .args ()
   .done ((err, config) => {
