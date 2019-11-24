@@ -1,6 +1,26 @@
 {
   "name": "flaks",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "keywords": [
+    "proxy",
+    "reverse",
+    "http",
+    "HA"
+  ],
+  "homepage": "https://github.com/pepmartinez/flaks",
+  "bugs": {
+    "url": "https://github.com/pepmartinez/flaks/issues",
+    "email": "pep.martinez@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pepmartinez/flaks.git"
+  },
+  "author": {
+    "name": "Jose Luis Martinez Juan",
+    "email": "pep.martinez@gmail.com"
+  },
+  "license": "GPL-3.0",
   "dependencies": {
     "@promster/express": "~3.2.0",
     "CBuffer": "~2.0.0",
@@ -24,6 +44,9 @@
     "mocha": "~6.1.4",
     "should": "~13.2.3",
     "supertest": "~4.0.2"
+  },
+  "bin": {
+    "flaks": "./index.js"
   },
   "scripts": {
     "test": "mocha --reporter spec --check-leaks --no-timeouts --exit test/",
