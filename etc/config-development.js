@@ -18,8 +18,8 @@ module.exports = {
   vhosts: {
     default: {
       http: {
-        wirelog: false,
-        introspect: false,
+//        wirelog: false,
+//        introspect: false,
         routes: {
           '/a/b/c': {
             target: 'http://xana:8090/a',
@@ -48,11 +48,14 @@ module.exports = {
         }
       },
       net: {
+        incoming_timeout: 66000,
+        outgoing_timeout: 55000
       }
     },
     'localhost.localdomain': {
       http: {
-        wirelog: (opts, req) => (req.headers.aaaa == '1'),
+//        wirelog: (opts, req) => (req.headers.aaaa == '1'),
+        wirelog: true,
         introspect: true,
         routes: {
           '/z(.*)': {
