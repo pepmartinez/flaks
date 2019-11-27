@@ -1,3 +1,6 @@
+# docker build -t pepmartinez/flaks:1.0.0 .
+# docker push pepmartinez/flaks:1.0.0 .
+
 FROM node:10.16.1-jessie-slim
 
 RUN apt-get update && apt-get install -y \

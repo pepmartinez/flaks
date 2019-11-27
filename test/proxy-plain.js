@@ -48,6 +48,10 @@ const config = {
             target: "http://xana:28090/sonics?what=$1",
             agent: "default"
           },
+          "/f/(.*)/g/(.*)": {
+            target: "http://xana:28090/$1/a/$2",
+            agent: "default"
+          },
         }
       },
       net: {
@@ -283,5 +287,33 @@ describe("Simple Routes, no agents", () => {
         });
     });
   });
+
+  it("proxies url ok with more than one capture", done => {
+    flaks(config, (err, context) => {
+      if (err) return done(err);
+
+      let target = _get_me_an_app();
+      let tserv = target.listen(28090);
+
+      request(context.app)
+        .get("/f/aaa/g/bbb/ccc")
+        .send("ddfgdgdgdgdf")
+        .set({
+          "x-request-id": "qwertyuiop"
+        })
+        .type("text")
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+
+          res.body.q.should.eql({});
+          res.body.u.should.eql("/aaa/a/bbb/ccc");
+
+          tserv.close();
+          context.shutdown(false, done);
+        });
+    });
+  });
+
 
 });
