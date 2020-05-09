@@ -32,7 +32,6 @@ function __shutdown__ (context, doexit, cb) {
     cb => {
       // stop promster
       if (context.promster) {
-        clearInterval(context.promster.collectDefaultMetrics());
         context.promster.register.clear();
       }
       cb ();

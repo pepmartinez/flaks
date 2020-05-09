@@ -1,7 +1,7 @@
 {
   "name": "flaks",
   "description": "reverse http/https proxy optimized for edge/outgoing traffic",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "keywords": [
     "proxy",
     "reverse",
@@ -23,7 +23,7 @@
   },
   "license": "GPL-3.0",
   "dependencies": {
-    "@promster/express": "~3.2.0",
+    "@promster/express": "~4.1.10",
     "CBuffer": "~2.0.0",
     "async": "~3.2.0",
     "body-parser": "~1.19.0",
@@ -36,7 +36,7 @@
     "http-shutdown": "~1.2.2",
     "lodash": "~4.17.15",
     "morgan": "~1.10.0",
-    "prom-client": "~11.5.3",
+    "prom-client": "~12.0.0",
     "winston": "~3.2.1",
     "winston-log-space": "~1.0.3"
   },
@@ -49,7 +49,7 @@
     "flaks": "./index.js"
   },
   "scripts": {
-    "test": "mocha --reporter spec --check-leaks --no-timeouts --exit test/",
-    "test-with-coverage": "nyc --reporter=text -- mocha --reporter spec --check-leaks --no-timeouts --exit test/"
+    "test": "mocha --reporter spec --no-timeouts --exit test/",
+    "test-with-coverage": "nyc --reporter=text -- mocha --reporter spec --no-timeouts --exit test/"
   }
 }
