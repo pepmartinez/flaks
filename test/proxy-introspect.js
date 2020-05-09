@@ -151,9 +151,9 @@ describe("introspection", () => {
           if (err) return done(err);
 //          console.log (require('util').inspect (context.proxy.status (true), {depth: null, colors: true}));
 
-          context.proxy.status(true).should.match({
-            default: {
-              "http://xana:666/other/$1": {
+          const status = context.proxy.status(true);
+
+          status.default['http://xana:666/other/$1'].should.match({
                 ECONNREFUSED: [
                   {
                     id: /.+/,
@@ -185,8 +185,9 @@ describe("introspection", () => {
                     }
                   }
                 ]
-              },
-              "http://noexistent-host.org:666/other/$1": {
+              });
+
+              status.default['http://noexistent-host.org:666/other/$1'].should.match({
                 ENOTFOUND: [
                   {
                     id: /.+/,
@@ -214,13 +215,12 @@ describe("introspection", () => {
                       code: "ENOTFOUND",
                       syscall: "getaddrinfo",
                       hostname: "noexistent-host.org",
-                      host: "noexistent-host.org",
-                      port: "666"
                     }
                   }
                 ]
-              },
-              "http://xana:28090/hawks/$1": {
+              });
+
+              status.default['http://xana:28090/hawks/$1'].should.match({
                 "200": [
                   {
                     id: "qwertyuiop",
@@ -295,9 +295,7 @@ describe("introspection", () => {
                     }
                   }
                 ]
-              }
-            }
-          });
+              });
 
           tserv.close();
           context.shutdown(false, done);
@@ -352,9 +350,9 @@ describe("introspection", () => {
           if (err) return done(err);
 //          console.log (require('util').inspect (context.proxy.status (true), {depth: null, colors: true}));
 
-          context.proxy.status(true).should.match({
-            default: {
-              "http://xana:666/other/$1": {
+          const status = context.proxy.status(true);
+
+          status.default['http://xana:666/other/$1'].should.match({
                 ECONNREFUSED: [
                   {
                     id: /.+/,
@@ -386,8 +384,9 @@ describe("introspection", () => {
                     }
                   }
                 ]
-              },
-              "http://noexistent-host.org:666/other/$1": {
+              });
+
+              status.default['http://noexistent-host.org:666/other/$1'].should.match({
                 ENOTFOUND: [
                   {
                     id: /.+/,
@@ -415,13 +414,12 @@ describe("introspection", () => {
                       code: "ENOTFOUND",
                       syscall: "getaddrinfo",
                       hostname: "noexistent-host.org",
-                      host: "noexistent-host.org",
-                      port: "666"
                     }
                   }
                 ]
-              },
-              "http://xana:28090/hawks/$1": {
+              });
+
+              status.default['http://xana:28090/hawks/$1'].should.match({
                 "200": [
                   {
                     id: "qwertyuiop",
@@ -496,9 +494,7 @@ describe("introspection", () => {
                     }
                   }
                 ]
-              }
-            }
-          });
+              });
 
           tserv.close();
           context.shutdown(false, done);

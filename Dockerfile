@@ -1,7 +1,7 @@
-# docker build -t pepmartinez/flaks:1.0.0 .
-# docker push pepmartinez/flaks:1.0.0 .
+# docker build -t pepmartinez/flaks:1.0.1 .
+# docker push pepmartinez/flaks:1.0.1 .
 
-FROM node:10.16.1-jessie-slim
+FROM node:10.16.3-buster-slim
 
 RUN apt-get update && apt-get install -y \
     build-essential \
