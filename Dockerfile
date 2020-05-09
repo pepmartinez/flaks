@@ -3,9 +3,9 @@
 
 FROM node:10.16.3-buster-slim
 
-RUN apt-get update && apt-get install -y \
-    build-essential \
- && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get install -y build-essential && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/src/app
 
