@@ -94,7 +94,7 @@ const config = {
       http: {
         routes: {
           "/(.*)": {
-            target: "https://xana:28090/$1",
+            target: "https://localhost:28090/$1",
             agent: "default",
             secure: false
           },
@@ -158,7 +158,7 @@ describe("HTTPS upstream", () => {
                 "content-type": "text/plain",
                 "user-agent": /node-superagent/,
                 "accept-encoding": /.+/,
-                host: "xana:28090"
+                host: "localhost:28090"
               },
               u: "/a/hilfe?a=1&b=666",
               b: "ddfgdgdgdgdf",

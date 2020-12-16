@@ -28,19 +28,19 @@ const config = {
         introspect: true,
         routes: {
           "/a/b/c": {
-            target: "http://xana:28090/a",
+            target: "http://localhost:28090/a",
             agent: "default"
           },
           "/b/(.*)": {
-            target: "http://xana:28090/hawks/$1",
+            target: "http://localhost:28090/hawks/$1",
             agent: "default"
           },
           "/b/c/d/(.*)": {
-            target: "http://xana:28090/other/$1",
+            target: "http://localhost:28090/other/$1",
             agent: "default"
           },
           "/c/nowhere/(.*)": {
-            target: "http://xana:666/other/$1",
+            target: "http://localhost:666/other/$1",
             agent: "default"
           },
           "/d/noname/(.*)": {
@@ -75,19 +75,19 @@ const config_with_agents = {
         introspect: true,
         routes: {
           "/a/b/c": {
-            target: "http://xana:28090/a",
+            target: "http://localhost:28090/a",
             agent: "default"
           },
           "/b/(.*)": {
-            target: "http://xana:28090/hawks/$1",
+            target: "http://localhost:28090/hawks/$1",
             agent: "default"
           },
           "/b/c/d/(.*)": {
-            target: "http://xana:28090/other/$1",
+            target: "http://localhost:28090/other/$1",
             agent: "default"
           },
           "/c/nowhere/(.*)": {
-            target: "http://xana:666/other/$1",
+            target: "http://localhost:666/other/$1",
             agent: "default"
           },
           "/d/noname/(.*)": {
@@ -153,15 +153,15 @@ describe("introspection", () => {
 
           const status = context.proxy.status(true);
 
-          status.default['http://xana:666/other/$1'].should.match({
+          status.default['http://localhost:666/other/$1'].should.match({
                 ECONNREFUSED: [
                   {
                     id: /.+/,
                     route: "/c/nowhere/(.*)",
-                    upstream: "http://xana:666/other/$1",
+                    upstream: "http://localhost:666/other/$1",
                     req: {
                       method: "POST",
-                      url: "http://xana:666/other/to/go",
+                      url: "http://localhost:666/other/to/go",
                       headers: {
                         "x-forwarded-host": /.+/,
                       "x-forwarded-proto": "http",
@@ -171,7 +171,7 @@ describe("introspection", () => {
                       "content-length": "12",
                       "content-type": "text/plain",
                       "user-agent": /.+/,
-                      host: "xana:666",
+                      host: "localhost:666",
                       "x-request-id": /.+/
                       },
                       body: 'ddfgdgdgdgdf'
@@ -180,7 +180,7 @@ describe("introspection", () => {
                       errno: "ECONNREFUSED",
                       code: "ECONNREFUSED",
                       syscall: "connect",
-                      address: "127.0.1.1",
+                      address: "127.0.0.1",
                       port: 666
                     }
                   }
@@ -220,15 +220,15 @@ describe("introspection", () => {
                 ]
               });
 
-              status.default['http://xana:28090/hawks/$1'].should.match({
+              status.default['http://localhost:28090/hawks/$1'].should.match({
                 "200": [
                   {
                     id: "qwertyuiop",
                     route: "/b/(.*)",
-                    upstream: "http://xana:28090/hawks/$1",
+                    upstream: "http://localhost:28090/hawks/$1",
                     req: {
                       method: "POST",
-                      url: "http://xana:28090/hawks/h?a=1&b=666",
+                      url: "http://localhost:28090/hawks/h?a=1&b=666",
                       headers: {
                       "x-forwarded-host": /.+/,
                       "x-forwarded-proto": "http",
@@ -239,7 +239,7 @@ describe("introspection", () => {
                       "x-request-id": "qwertyuiop",
                       "content-type": "text/plain",
                       "user-agent": /.+/,
-                      host: "xana:28090"
+                      host: "localhost:28090"
                       },
                       body: 'ddfgdgdgdgdf'
                     },
@@ -250,7 +250,7 @@ describe("introspection", () => {
                       headers: {
                         "x-powered-by": "Express",
                         "content-type": "application/json; charset=utf-8",
-                        "content-length": "393",
+                        "content-length": "398",
                         etag: /.+/,
                         date: /.+/,
                         connection: "close"
@@ -261,10 +261,10 @@ describe("introspection", () => {
                   {
                     id: "asdfghjkl",
                     route: "/b/(.*)",
-                    upstream: "http://xana:28090/hawks/$1",
+                    upstream: "http://localhost:28090/hawks/$1",
                     req: {
                       method: "POST",
-                      url: "http://xana:28090/hawks/h?a=1&b=666",
+                      url: "http://localhost:28090/hawks/h?a=1&b=666",
                       headers: {
                       "x-forwarded-host": /.+/,
                       "x-forwarded-proto": "http",
@@ -275,7 +275,7 @@ describe("introspection", () => {
                       "x-request-id": "asdfghjkl",
                       "content-type": "text/plain",
                       "user-agent": /.+/,
-                      host: "xana:28090"
+                      host: "localhost:28090"
                       },
                       body: 'ddfgdgdgdgdf'
                     },
@@ -286,7 +286,7 @@ describe("introspection", () => {
                       headers: {
                         "x-powered-by": "Express",
                         "content-type": "application/json; charset=utf-8",
-                        "content-length": "392",
+                        "content-length": "397",
                         etag: /.+/,
                         date: /.+/,
                         connection: "close"
@@ -352,15 +352,15 @@ describe("introspection", () => {
 
           const status = context.proxy.status(true);
 
-          status.default['http://xana:666/other/$1'].should.match({
+          status.default['http://localhost:666/other/$1'].should.match({
                 ECONNREFUSED: [
                   {
                     id: /.+/,
                     route: "/c/nowhere/(.*)",
-                    upstream: "http://xana:666/other/$1",
+                    upstream: "http://localhost:666/other/$1",
                     req: {
                       method: "POST",
-                      url: "http://xana:666/other/to/go",
+                      url: "http://localhost:666/other/to/go",
                       headers: {
                       "x-forwarded-host": /.+/,
                       "x-forwarded-proto": "http",
@@ -370,7 +370,7 @@ describe("introspection", () => {
                       "content-length": "12",
                       "content-type": "text/plain",
                       "user-agent": /.+/,
-                      host: "xana:666",
+                      host: "localhost:666",
                       "x-request-id": /.+/
                       },
                       body: 'ddfgdgdgdgdf'
@@ -379,7 +379,7 @@ describe("introspection", () => {
                       errno: "ECONNREFUSED",
                       code: "ECONNREFUSED",
                       syscall: "connect",
-                      address: "127.0.1.1",
+                      address: "127.0.0.1",
                       port: 666
                     }
                   }
@@ -419,15 +419,15 @@ describe("introspection", () => {
                 ]
               });
 
-              status.default['http://xana:28090/hawks/$1'].should.match({
+              status.default['http://localhost:28090/hawks/$1'].should.match({
                 "200": [
                   {
                     id: "qwertyuiop",
                     route: "/b/(.*)",
-                    upstream: "http://xana:28090/hawks/$1",
+                    upstream: "http://localhost:28090/hawks/$1",
                     req: {
                       method: "POST",
-                      url: "http://xana:28090/hawks/h?a=1&b=666",
+                      url: "http://localhost:28090/hawks/h?a=1&b=666",
                       headers: {
                       "x-forwarded-host": /.+/,
                       "x-forwarded-proto": "http",
@@ -438,7 +438,7 @@ describe("introspection", () => {
                       "x-request-id": "qwertyuiop",
                       "content-type": "text/plain",
                       "user-agent": /.+/,
-                      host: "xana:28090"
+                      host: "localhost:28090"
                       },
                       body: 'ddfgdgdgdgdf'
                     },
@@ -449,7 +449,7 @@ describe("introspection", () => {
                       headers: {
                         "x-powered-by": "Express",
                         "content-type": "application/json; charset=utf-8",
-                        "content-length": "398",
+                        "content-length": "403",
                         etag: /.+/,
                         date: /.+/,
                         connection: "keep-alive"
@@ -460,10 +460,10 @@ describe("introspection", () => {
                   {
                     id: "asdfghjkl",
                     route: "/b/(.*)",
-                    upstream: "http://xana:28090/hawks/$1",
+                    upstream: "http://localhost:28090/hawks/$1",
                     req: {
                       method: "POST",
-                      url: "http://xana:28090/hawks/h?a=1&b=666",
+                      url: "http://localhost:28090/hawks/h?a=1&b=666",
                       headers: {
                       "x-forwarded-host": /.+/,
                       "x-forwarded-proto": "http",
@@ -474,7 +474,7 @@ describe("introspection", () => {
                       "x-request-id": "asdfghjkl",
                       "content-type": "text/plain",
                       "user-agent": /.+/,
-                      host: "xana:28090"
+                      host: "localhost:28090"
                       },
                       body: 'ddfgdgdgdgdf'
                     },
@@ -485,7 +485,7 @@ describe("introspection", () => {
                       headers: {
                         "x-powered-by": "Express",
                         "content-type": "application/json; charset=utf-8",
-                        "content-length": "397",
+                        "content-length": "402",
                         etag: /.+/,
                         date: /.+/,
                         connection: "keep-alive"

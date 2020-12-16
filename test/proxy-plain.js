@@ -25,19 +25,19 @@ const config = {
       http: {
         routes: {
           "/a/b/c": {
-            target: "http://xana:28090/a",
+            target: "http://localhost:28090/a",
             agent: "default"
           },
           "/b/(.*)": {
-            target: "http://xana:28090/hawks/$1",
+            target: "http://localhost:28090/hawks/$1",
             agent: "default"
           },
           "/b/c/d/(.*)": {
-            target: "http://xana:28090/other/$1",
+            target: "http://localhost:28090/other/$1",
             agent: "default"
           },
           "/c/nowhere/(.*)": {
-            target: "http://xana:666/other/$1",
+            target: "http://localhost:666/other/$1",
             agent: "default"
           },
           "/d/noname/(.*)": {
@@ -45,11 +45,11 @@ const config = {
             agent: "default"
           },
           "/e/(.*)": {
-            target: "http://xana:28090/sonics?what=$1",
+            target: "http://localhost:28090/sonics?what=$1",
             agent: "default"
           },
           "/f/(.*)/g/(.*)": {
-            target: "http://xana:28090/$1/a/$2",
+            target: "http://localhost:28090/$1/a/$2",
             agent: "default"
           },
         }
@@ -169,7 +169,7 @@ describe("Simple Routes, no agents", () => {
             "content-type": "text/plain",
             "user-agent": "node-superagent/3.8.3",
             "accept-encoding": "gzip, deflate",
-            host: /xana:.+/
+            host: /localhost:.+/
           });
 
           tserv.close();
