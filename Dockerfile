@@ -1,7 +1,7 @@
 # docker build -t pepmartinez/flaks:1.0.4 .
 # docker push pepmartinez/flaks:1.0.4
 
-FROM node:14.15.1-alpine3.12
+FROM node:14.15.1-buster-slim
 
 RUN apt-get update && \
     apt-get install -y build-essential && \
