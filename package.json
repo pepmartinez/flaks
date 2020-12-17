@@ -1,7 +1,7 @@
 {
   "name": "flaks",
   "description": "reverse http/https proxy optimized for edge/outgoing traffic",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "keywords": [
     "proxy",
     "reverse",
