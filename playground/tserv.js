@@ -9,6 +9,10 @@ app.use (bodyParser.urlencoded ({extended: true}));
 app.use (bodyParser.json ());
 app.use (bodyParser.text());
 
+app.all ('/st/:st', (req, res) => {
+  res.status (+(req.params.st)).send ('status');
+});
+
 app.all ('*', (req, res) => {
   res.send ({
     q: req.query,
