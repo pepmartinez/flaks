@@ -174,7 +174,7 @@ describe("introspection", () => {
                       host: "localhost:666",
                       "x-request-id": /.+/
                       },
-                      body: 'ddfgdgdgdgdf'
+                      body: ''
                     },
                     err: {
                       errno: "ECONNREFUSED",
@@ -208,7 +208,7 @@ describe("introspection", () => {
                       host: "noexistent-host.org:666",
                       "x-request-id": /.+/
                       },
-                      body: 'ddfgdgdgdgdf'
+                      body: ''
                     },
                     err: {
                       errno: "ENOTFOUND",
@@ -373,7 +373,7 @@ describe("introspection", () => {
                       host: "localhost:666",
                       "x-request-id": /.+/
                       },
-                      body: 'ddfgdgdgdgdf'
+                      body: ''
                     },
                     err: {
                       errno: "ECONNREFUSED",
@@ -407,7 +407,7 @@ describe("introspection", () => {
                       host: "noexistent-host.org:666",
                       "x-request-id": /.+/
                       },
-                      body: 'ddfgdgdgdgdf'
+                      body: ''
                     },
                     err: {
                       errno: "ENOTFOUND",

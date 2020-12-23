@@ -44,6 +44,10 @@ const config = {
             target: "http://noexistent-host.org:666/other/$1",
             agent: "default"
           },
+          "/d/fwall/(.*)": {
+            target: "http://1.1.1.1:6666/other/$1",
+            agent: "default"
+          },
           "/e/(.*)": {
             target: "http://localhost:28090/sonics?what=$1",
             agent: "default"
@@ -56,7 +60,8 @@ const config = {
       },
       net: {
         incoming_timeout: 3000,
-        outgoing_timeout: 2000
+        outgoing_timeout: 2000,
+        connect_timeout: 1000
       }
     }
   }
@@ -132,6 +137,26 @@ describe("Simple Routes, no agents", () => {
         .end((err, res) => {
           context.shutdown(false, done);
           res.status.should.equal(502);
+        });
+    });
+  });
+
+  it("POST to firewalled port gets 502 after 1 secs", done => {
+    flaks(config, (err, context) => {
+      if (err) return done(err);
+
+      const hrstart = process.hrtime();
+
+      request(context.app)
+        .post("/d/fwall/to/go")
+        .send("ddfgdgdgdgdf")
+        .type("text")
+        .end((err, res) => {
+          const hrend = process.hrtime(hrstart);
+          const delta = (hrend[0]*1e9 + hrend[1]) / 1e6;
+          delta.should.be.approximately(1000, 200);
+          context.shutdown(false, done);
+          res.status.should.equal(504);
         });
     });
   });
