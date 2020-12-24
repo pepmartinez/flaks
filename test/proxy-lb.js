@@ -17,6 +17,29 @@ function _get_me_an_app() {
     res.status (+(req.params.st)).send ('status');
   });
 
+  app.all ('/hole', (req, res) => {
+    app.__hits++;
+    app.__req = req;
+    setTimeout (() => res.socket.destroy (), 500);
+  });
+
+  app.all ('/never-respond', (req, res) => {
+    app.__hits++;
+    app.__req = req;
+  });
+
+  app.all ('/half-response', (req, res) => {
+    app.__hits++;
+    app.__req = req;
+    res.writeHead(200, {
+      'Content-Length': 666,
+      'Content-Type': 'text/plain',
+      connection: 'keep-alive'
+    });
+    setTimeout (() => res.socket.destroy (), 500);
+  });
+
+
   app.all('*', (req, res) => {
     app.__hits++;
     app.__req = req;
@@ -45,6 +68,15 @@ const config = {
           '/d/(.*)': {
             target: ['http://1.1.1.1:28090/st/$1', 'http://localhost:28090/st/$1', 'http://localhost:28090/st/510']
           },
+          '/e/(.*)': {
+            target: ['http://localhost:28090/hole', 'http://localhost:28090/st/510']
+          },
+          '/f/(.*)': {
+            target: ['http://localhost:28090/half-response', 'http://localhost:28090/st/510']
+          },
+          '/g/(.*)': {
+            target: ['http://localhost:28090/never-respond', 'http://localhost:28090/st/510']
+          },
         }
       },
       net: {
@@ -65,8 +97,11 @@ describe('LoadBalancing', () => {
     cb => {flaks = require('../uber-app'); cb (); }
   ], done));
 
+  ['post', 'put', 'patch', 'delete'].forEach (verb =>
   [200, 207, 404, 444, 500, 517].forEach (st => {
-    it(`proxies POST gets HTTP ${st} on first option, ignores the rest `, done => {
+//  ['post'].forEach (verb =>
+//  [200].forEach (st => {
+    it(`proxies ${verb} gets HTTP ${st} on first option, ignores the rest `, done => {
       flaks(config, (err, context) => {
         if (err) return done(err);
 
@@ -74,7 +109,7 @@ describe('LoadBalancing', () => {
         let tserv = target.listen(28090);
 
         request(context.app)
-          .post(`/a/${st}`)
+          [verb](`/a/${st}`)
           .query({ a: 1, b: '666' })
           .send('ddfgdgdgdgdf')
           .set({
@@ -94,7 +129,7 @@ describe('LoadBalancing', () => {
       });
     });
 
-    it(`proxies POST gets HTTP ${st} on second option (after connection refused), ignores the rest `, done => {
+    it(`proxies ${verb} gets HTTP ${st} on second option (after connection refused), ignores the rest `, done => {
       flaks(config, (err, context) => {
         if (err) return done(err);
 
@@ -102,7 +137,7 @@ describe('LoadBalancing', () => {
         let tserv = target.listen(28090);
 
         request(context.app)
-          .post(`/b/${st}`)
+          [verb](`/b/${st}`)
           .query({ a: 1, b: '666' })
           .send('ddfgdgdgdgdf')
           .set({
@@ -122,7 +157,7 @@ describe('LoadBalancing', () => {
       });
     });
 
-    it(`proxies POST gets HTTP ${st} on second option (after resolution error), ignores the rest `, done => {
+    it(`proxies ${verb} gets HTTP ${st} on second option (after resolution error), ignores the rest `, done => {
       flaks(config, (err, context) => {
         if (err) return done(err);
 
@@ -130,7 +165,7 @@ describe('LoadBalancing', () => {
         let tserv = target.listen(28090);
 
         request(context.app)
-          .post(`/c/${st}`)
+          [verb](`/c/${st}`)
           .query({ a: 1, b: '666' })
           .send('ddfgdgdgdgdf')
           .set({
@@ -150,7 +185,7 @@ describe('LoadBalancing', () => {
       });
     });
 
-    it(`proxies POST gets HTTP ${st} on second option (after connection timeout), ignores the rest `, done => {
+    it(`proxies ${verb} gets HTTP ${st} on second option (after connection timeout), ignores the rest `, done => {
       flaks(config, (err, context) => {
         if (err) return done(err);
 
@@ -158,7 +193,7 @@ describe('LoadBalancing', () => {
         let tserv = target.listen(28090);
 
         request(context.app)
-          .post(`/d/${st}`)
+          [verb](`/d/${st}`)
           .query({ a: 1, b: '666' })
           .send('ddfgdgdgdgdf')
           .set({
@@ -178,7 +213,96 @@ describe('LoadBalancing', () => {
       });
     });
 
-  });
+    it(`proxies ${verb} gets HTTP ${st} on first option upon socket close, ignores the rest `, done => {
+      flaks(config, (err, context) => {
+        if (err) return done(err);
+
+        let target = _get_me_an_app();
+        let tserv = target.listen(28090);
+
+        request(context.app)
+          [verb](`/e/${st}`)
+          .query({ a: 1, b: '666' })
+          .send('ddfgdgdgdgdf')
+          .set({
+            'x-request-id': 'qwertyuiop'
+          })
+          .type('text')
+          .expect(504)
+          .end((err, res) => {
+            if (err) return done(err);
+
+            target.__hits.should.equal (1);
+            target.__req.body.should.equal ('ddfgdgdgdgdf');
+
+            tserv.close();
+            context.shutdown(false, done);
+          });
+      });
+    });
+
+
+    it(`proxies ${verb} gets HTTP ${st} on first option upon socket close on half-received response, ignores the rest `, done => {
+      flaks(config, (err, context) => {
+        if (err) return done(err);
+
+        let target = _get_me_an_app();
+        let tserv = target.listen(28090);
+
+        request(context.app)
+          [verb](`/f/${st}`)
+          .query({ a: 1, b: '666' })
+          .send('ddfgdgdgdgdf')
+          .set({
+            'x-request-id': 'qwertyuiop'
+          })
+          .type('text')
+          .expect(504)
+          .end((err, res) => {
+            if (err) return done(err);
+
+            target.__hits.should.equal (1);
+            target.__req.body.should.equal ('ddfgdgdgdgdf');
+
+            tserv.close();
+            context.shutdown(false, done);
+          });
+      });
+    });
+
+
+    it(`proxies ${verb} gets HTTP ${st} on first option upon upstream response timeout, ignores the rest `, done => {
+      flaks(config, (err, context) => {
+        if (err) return done(err);
+
+        let target = _get_me_an_app();
+        let tserv = target.listen(28090);
+
+        request(context.app)
+          [verb](`/g/${st}`)
+          .query({ a: 1, b: '666' })
+          .send('ddfgdgdgdgdf')
+          .set({
+            'x-request-id': 'qwertyuiop'
+          })
+          .type('text')
+          .expect(504)
+          .end((err, res) => {
+            if (err) return done(err);
+
+            target.__hits.should.equal (1);
+            target.__req.body.should.equal ('ddfgdgdgdgdf');
+
+            tserv.close();
+            context.shutdown(false, done);
+          });
+      });
+    });
+
+
+
+
+  }));
 
 
 
