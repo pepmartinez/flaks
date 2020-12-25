@@ -100,7 +100,7 @@ describe('LoadBalancing', () => {
   ['post', 'put', 'patch', 'delete'].forEach (verb =>
   [200, 207, 404, 444, 500, 517].forEach (st => {
 //  ['post'].forEach (verb =>
-//  [200].forEach (st => {
+//    [200].forEach (st => {
     it(`proxies ${verb} gets HTTP ${st} on first option, ignores the rest `, done => {
       flaks(config, (err, context) => {
         if (err) return done(err);

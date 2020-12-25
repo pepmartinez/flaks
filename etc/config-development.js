@@ -38,7 +38,17 @@ module.exports = {
             agent: 'default'
           },
           '/status/(.*)' : {
-            target: ['http://localhost:8098/st/504', 'http://localhosto:8090/st/$1', 'http://localhost:8090/st/$1' ],
+            target: ['http://localhost:8098/st/504', 'http://localhosto:8090/st/$1', 'http://www.hh.se:8090/st/$1' ],
+            // lb: [seq|spread|rr]
+            agent: 'default'
+          },
+          '/lb/(.*)' : {
+            target: [
+              'http://localhost:8098/st/504',
+              'http://localhosto:8090/st/$1',
+              'http://www.hh.se:8090/st/$1'
+            ],
+            // lb: [seq|spread|rr]
             agent: 'default'
           },
           '/g/(.*)' : {
@@ -52,8 +62,9 @@ module.exports = {
         }
       },
       net: {
-        incoming_timeout: 4000,
-        outgoing_timeout: 5000
+        incoming_timeout: 14000,
+        outgoing_timeout: 15000,
+        connect_timeout:  3000,
       }
     },
     'localhost.localdomain': {
