@@ -37,7 +37,8 @@ Log.init (function (err) {
     },
     net: {
       incoming_timeout: 120000,
-      outgoing_timeout: 110000
+      outgoing_timeout: 110000,
+      connect_timeout:  5000
     }
   };
 
@@ -49,7 +50,7 @@ Log.init (function (err) {
   .env ()
   .args ()
   .done ((err, config) => {
-    if (err) return log.error (err);
+    if (err) return log.error (err.stack);
 
     const full_app = require ('./uber-app');
 
