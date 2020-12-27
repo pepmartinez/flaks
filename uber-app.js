@@ -29,6 +29,15 @@ function __shutdown__ (context, doexit, cb) {
         cb ();
       }
     },
+    // notify lifecycle
+    cb => {
+      let tasks = [];
+      _.each (context.lifecycle_list, v => {
+        if (v.end) tasks.push (cb => v.end (cb));
+      });
+
+      async.series (tasks, cb);
+    },
     cb => {
       // stop promster
       if (context.promster) {
@@ -50,9 +59,15 @@ function __shutdown__ (context, doexit, cb) {
       }
       cb ();
     },
-  ], () => {
+  ], err => {
+    //          require('active-handles').print();
+    if (err) {
+      log.error ('got an error on shutdown:');
+      log.error (err.stack || err);
+    }
+    else {
     log.info ('instance clean-shutdown completed');
-//          require('active-handles').print();
+    }
 
     if (doexit) {
       log.info ('Exiting...');
@@ -67,7 +82,7 @@ function __shutdown__ (context, doexit, cb) {
 
 /////////////////////////////////////////////////////////////////
 function uber_app (config, cb) {
-  let context = {config};
+  let context = {config, lifecycle_list: []};
 
   async.series ([
     cb => {
@@ -94,7 +109,14 @@ function uber_app (config, cb) {
       });
     },
     // post-ctor init
-    cb => context.proxy.init (cb)
+    cb => {
+      let tasks = [];
+      _.each (context.lifecycle_list, v => {
+        if (v.init) tasks.push (cb => v.init (cb));
+      });
+
+      async.series (tasks, cb);
+    }
   ], err => {
     context.shutdown = (doexit, cb) => __shutdown__ (context, doexit, cb);
     cb (err, context);
