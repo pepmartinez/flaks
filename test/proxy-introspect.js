@@ -158,7 +158,7 @@ describe("introspection", () => {
                   {
                     id: /.+/,
                     route: "/c/nowhere/(.*)",
-                    upstream: "http://localhost:666/other/$1",
+                    upstream: {url: "http://localhost:666/other/$1"},
                     req: {
                       method: "POST",
                       url: "http://localhost:666/other/to/go",
@@ -192,7 +192,7 @@ describe("introspection", () => {
                   {
                     id: /.+/,
                     route: "/d/noname/(.*)",
-                    upstream: "http://noexistent-host.org:666/other/$1",
+                    upstream: {url: "http://noexistent-host.org:666/other/$1"},
                     req: {
                       method: "POST",
                       url: "http://noexistent-host.org:666/other/to/go",
@@ -225,7 +225,7 @@ describe("introspection", () => {
                   {
                     id: "qwertyuiop",
                     route: "/b/(.*)",
-                    upstream: "http://localhost:28090/hawks/$1",
+                    upstream: {url: "http://localhost:28090/hawks/$1"},
                     req: {
                       method: "POST",
                       url: "http://localhost:28090/hawks/h?a=1&b=666",
@@ -261,7 +261,7 @@ describe("introspection", () => {
                   {
                     id: "asdfghjkl",
                     route: "/b/(.*)",
-                    upstream: "http://localhost:28090/hawks/$1",
+                    upstream: {url: "http://localhost:28090/hawks/$1"},
                     req: {
                       method: "POST",
                       url: "http://localhost:28090/hawks/h?a=1&b=666",
@@ -357,7 +357,7 @@ describe("introspection", () => {
                   {
                     id: /.+/,
                     route: "/c/nowhere/(.*)",
-                    upstream: "http://localhost:666/other/$1",
+                    upstream: {url: "http://localhost:666/other/$1"},
                     req: {
                       method: "POST",
                       url: "http://localhost:666/other/to/go",
@@ -391,7 +391,7 @@ describe("introspection", () => {
                   {
                     id: /.+/,
                     route: "/d/noname/(.*)",
-                    upstream: "http://noexistent-host.org:666/other/$1",
+                    upstream: {url: "http://noexistent-host.org:666/other/$1"},
                     req: {
                       method: "POST",
                       url: "http://noexistent-host.org:666/other/to/go",
@@ -424,7 +424,7 @@ describe("introspection", () => {
                   {
                     id: "qwertyuiop",
                     route: "/b/(.*)",
-                    upstream: "http://localhost:28090/hawks/$1",
+                    upstream: {url: "http://localhost:28090/hawks/$1"},
                     req: {
                       method: "POST",
                       url: "http://localhost:28090/hawks/h?a=1&b=666",
@@ -460,7 +460,7 @@ describe("introspection", () => {
                   {
                     id: "asdfghjkl",
                     route: "/b/(.*)",
-                    upstream: "http://localhost:28090/hawks/$1",
+                    upstream: {url: "http://localhost:28090/hawks/$1"},
                     req: {
                       method: "POST",
                       url: "http://localhost:28090/hawks/h?a=1&b=666",
