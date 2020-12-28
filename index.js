@@ -1,6 +1,4 @@
 var CConf = require ('cascade-config');
-var async = require ('async');
-var _ =     require ('lodash');
 var Log =   require ('winston-log-space');
 
 
@@ -52,38 +50,10 @@ Log.init (function (err) {
   .done ((err, config) => {
     if (err) return log.error (err.stack);
 
-    const full_app = require ('./uber-app');
+    const main = require ('./main');
 
-    full_app (config, (err, context) => {
-      async.series ([
-        cb => cb (err),
-        cb => {
-          var listen_port = config.listen_port;
-          var server = require ('http').createServer (context.app);
-          context.server = require ('http-shutdown') (server);
+    main.run (config, (err, context) => {
 
-          context.server.listen (listen_port, err => {
-            if (err) return cb (err);
-            log.info ('app listening at %s', listen_port);
-            cb ();
-          });
-        },
-        cb => {
-          require ('@promster/express').signalIsUp();
-          cb ();
-        }
-      ], err => {  // all done
-        if (err) {
-          log.error (err);
-          process.exit (1);
-        }
-
-        // set up shutdown hooks
-        process.on ('SIGINT',  () => context.shutdown (true));
-        process.on ('SIGTERM', () => context.shutdown (true));
-
-        log.info ('instance ready');
-      });
     });
   });
 });
