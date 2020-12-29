@@ -44,9 +44,30 @@ module.exports = {
           },
           '/lb/(.*)' : {
             target: [
-              'http://localhost:8098/st/504',
-              'http://localhosto:8090/st/$1',
-              'http://www.hh.se:8090/st/$1'
+              {
+                url: 'http://localhost:8098/st/$1',
+                check: {
+                  path: '/health'
+                }
+              },
+              {
+                url: 'http://localhosto:8090/st/$1',
+                check: {
+                  path: '/health'
+                }
+              },
+              {
+                url: 'http://www.hh.se:8090/st/$1',
+                check: {
+                  path: '/health'
+                }
+              },
+              {
+                url: 'http://localhost:8090/st/$1',
+                check: {
+                  path: '/health'
+                }
+              },
             ],
             // lb: [seq|spread|rr]
             agent: 'default'
