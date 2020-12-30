@@ -298,11 +298,11 @@ A concise list of known to-do things (in no particular order):
 * more than one listener
 * https listeners
 * http2 support
-* load balance
-* retries on upstream errors
-* active checks
++ load balance
++ retries on upstream errors
++ active checks
 * circuit breakers
-* extra middleware
++ extra middleware
 * req/res manipulation
 * automation/ctrl
 * auth on internal paths (status, metrics)
