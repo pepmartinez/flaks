@@ -55,6 +55,7 @@ const config = {
   vhosts: {
     default: {
       http: {
+//        wirelog: true,
         routes: {
           '/a/(.*)': {
             target: ['http://localhost:28090/st/$1', 'http://localhost:28090/st/510']
@@ -213,7 +214,7 @@ describe('LoadBalancing', () => {
       });
     });
 
-    it(`proxies ${verb} gets HTTP ${st} on first option upon socket close, ignores the rest `, done => {
+    it(`proxies ${verb} gets HTTP 502 on first option upon socket close, ignores the rest `, done => {
       flaks(config, (err, context) => {
         if (err) return done(err);
 
@@ -228,7 +229,7 @@ describe('LoadBalancing', () => {
             'x-request-id': 'qwertyuiop'
           })
           .type('text')
-          .expect(504)
+          .expect(502)
           .end((err, res) => {
             if (err) return done(err);
 
@@ -242,7 +243,7 @@ describe('LoadBalancing', () => {
     });
 
 
-    it(`proxies ${verb} gets HTTP ${st} on first option upon socket close on half-received response, ignores the rest `, done => {
+    it(`proxies ${verb} gets HTTP 502 on first option upon socket close on half-received response, ignores the rest `, done => {
       flaks(config, (err, context) => {
         if (err) return done(err);
 
@@ -257,7 +258,7 @@ describe('LoadBalancing', () => {
             'x-request-id': 'qwertyuiop'
           })
           .type('text')
-          .expect(504)
+          .expect(502)
           .end((err, res) => {
             if (err) return done(err);
 
@@ -271,7 +272,7 @@ describe('LoadBalancing', () => {
     });
 
 
-    it(`proxies ${verb} gets HTTP ${st} on first option upon upstream response timeout, ignores the rest `, done => {
+    it(`proxies ${verb} gets HTTP 502 on first option upon upstream response timeout, ignores the rest `, done => {
       flaks(config, (err, context) => {
         if (err) return done(err);
 
@@ -286,7 +287,7 @@ describe('LoadBalancing', () => {
             'x-request-id': 'qwertyuiop'
           })
           .type('text')
-          .expect(504)
+          .expect(502)
           .end((err, res) => {
             if (err) return done(err);
 

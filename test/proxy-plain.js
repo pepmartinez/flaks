@@ -121,7 +121,7 @@ describe("Simple Routes, no agents", () => {
         .type("text")
         .end((err, res) => {
           context.shutdown(false, done);
-          res.status.should.equal(503);
+          res.status.should.equal(502);
         });
     });
   });
@@ -156,7 +156,7 @@ describe("Simple Routes, no agents", () => {
           const delta = (hrend[0]*1e9 + hrend[1]) / 1e6;
           delta.should.be.approximately(1000, 200);
           context.shutdown(false, done);
-          res.status.should.equal(504);
+          res.status.should.equal(502);
         });
     });
   });
