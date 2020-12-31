@@ -12,9 +12,3 @@
 * add health/ready endpoint
 * wildcards or regex on vhost select
 
-
-
-* correct uri label on metrics
-  http_upstream_request_duration_bucket{le="1000",route="/status/(.*)",uri="http://localhost:8098/st/504,http://localhosto:8090/st/$1,http://localhost:8090/st/$1",method="GET",statusCode="201",vhost="default"} 1
-  http_upstream_request_duration_bucket{le="1500",route="/status/(.*)",uri="http://localhost:8098/st/504,http://localhosto:8090/st/$1,http://localhost:8090/st/$1",method="GET",statusCode="201",vhost="default"} 1
-  http_upstream_request_duration_bucket{le="2000",route="/status/(.*)",uri="http://localhost:8098/st/504,http://localhosto:8090/st/$1,http://localhost:8090/st/$1",method="GET",statusCode="201",vhost="default"} 1

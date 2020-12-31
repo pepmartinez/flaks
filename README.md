@@ -288,7 +288,7 @@ docker run \
   -p 8080:8080  \
   -e NODE_ENV=development
   -v /path/to/config:/usr/src/app/etc \
-  pepmartinez/flaks:1.0.0
+  pepmartinez/flaks:1.0.8
 ```
 
 See [here](https://hub.docker.com/repository/docker/pepmartinez/flaks) for more details
