@@ -78,6 +78,22 @@ const config = {
           '/g/(.*)': {
             target: ['http://localhost:28090/never-respond', 'http://localhost:28090/st/510']
           },
+          '/h/(.*)': {
+            target: [
+              {url: 'http://localhost:28090/ein',  w: 9},
+              {url: 'http://localhost:28090/zwei', w: 1},
+              {url: 'http://localhost:28090/drei', w: 90},
+            ],
+            lb: 'seq'
+          },
+          '/i/(.*)': {
+            target: [
+              {url: 'http://localhost:28090/ein',  w: 9},
+              {url: 'http://localhost:28090/zwei', w: 1},
+              {url: 'http://localhost:28090/drei', w: 90},
+            ],
+            lb: 'rand'
+          },
         }
       },
       net: {
@@ -242,7 +258,6 @@ describe('LoadBalancing', () => {
       });
     });
 
-
     it(`proxies ${verb} gets HTTP 502 on first option upon socket close on half-received response, ignores the rest `, done => {
       flaks(config, (err, context) => {
         if (err) return done(err);
@@ -270,7 +285,6 @@ describe('LoadBalancing', () => {
           });
       });
     });
-
 
     it(`proxies ${verb} gets HTTP 502 on first option upon upstream response timeout, ignores the rest `, done => {
       flaks(config, (err, context) => {
@@ -300,12 +314,74 @@ describe('LoadBalancing', () => {
       });
     });
 
-
-
-
   }));
 
 
+
+  it(`proxies correctly using lb seq`, done => {
+    flaks(config, (err, context) => {
+      if (err) return done(err);
+
+      let target = _get_me_an_app();
+      let tserv = target.listen(28090);
+
+      async.timesLimit (
+        1000,
+        17,
+        (n, cb) => request(context.app).get ('/h/h').end ((err, res) => {
+          if (err) return cb (err);
+          cb (null, res.body.u);
+        }),
+        (err, res) => {
+          if (err) return done(err);
+
+          const cuml = res.reduce ((acc, v) => {
+            if (!acc[v]) acc[v] = 0;
+            acc[v]++;
+            return acc;
+          }, {});
+
+          cuml.should.eql ({ '/ein': 1000 });
+
+          tserv.close();
+          context.shutdown(false, done);
+        });
+    });
+  });
+
+  it(`proxies correctly using lb rand`, done => {
+    flaks(config, (err, context) => {
+      if (err) return done(err);
+
+      let target = _get_me_an_app();
+      let tserv = target.listen(28090);
+
+      async.timesLimit (
+        10000,
+        17,
+        (n, cb) => request(context.app).get ('/i/i').end ((err, res) => {
+          if (err) return cb (err);
+          cb (null, res.body.u);
+        }),
+        (err, res) => {
+          if (err) return done(err);
+
+          const cuml = res.reduce ((acc, v) => {
+            if (!acc[v]) acc[v] = 0;
+            acc[v]++;
+            return acc;
+          }, {});
+
+          _.size (cuml).should.equal (3);
+          cuml['/ein'].should.be.approximately (900, 100);
+          cuml['/zwei'].should.be.approximately (100, 100);
+          cuml['/drei'].should.be.approximately (9000, 100);
+
+          tserv.close();
+          context.shutdown(false, done);
+        });
+    });
+  });
 
 
 });

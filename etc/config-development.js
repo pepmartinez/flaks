@@ -39,7 +39,16 @@ module.exports = {
           },
           '/status/(.*)' : {
             target: ['http://localhost:8098/st/504', 'http://localhosto:8090/st/$1', 'http://localhost:8090/st/$1' ],
-            // lb: [seq|spread|rr]
+            lb: 'rand',
+            agent: 'default'
+          },
+          '/lb0/(.*)' : {
+            target: [
+              'http://localhost:8098/st/504',
+              'http://localhosto:8090/st/$1',
+              'http://localhost:8090/st/$1'
+            ],
+            lb: 'rand',
             agent: 'default'
           },
           '/lb/(.*)' : {
