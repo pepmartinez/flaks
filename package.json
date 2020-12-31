@@ -39,7 +39,8 @@
     "winston": "~3.2.1",
     "winston-log-space": "~1.0.5",
     "into-stream": "~6.0.0",
-    "simple-get": "~4.0.0"
+    "simple-get": "~4.0.0",
+    "chance": "~1.1.7"
   },
   "devDependencies": {
     "mocha": "~8.2.1",
