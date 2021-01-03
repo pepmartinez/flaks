@@ -4,7 +4,7 @@
 FROM node:14.15.2-buster-slim as builder
 
 RUN apt-get update && \
-    apt-get install -y build-essential && \
+    apt-get install -y build-essential python && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/src/app
