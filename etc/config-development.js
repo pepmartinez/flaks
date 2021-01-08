@@ -68,7 +68,8 @@ module.exports = {
               {
                 url: 'http://www.hh.se:8090/st/$1',
                 check: {
-                  path: '/health'
+                  path: '/health',
+                  port: 80
                 }
               },
               {
