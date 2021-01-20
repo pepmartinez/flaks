@@ -105,11 +105,21 @@ module.exports = {
         introspect: true,
         routes: {
           '/z(.*)': {
-            target: 'http://localhost:8090/z/$1',
+            target: [{
+              url: 'http://localhost:8090/z/$1',
+              check: {
+                path: '/health'
+              },
+            }],
             agent: 'default'
           },
           '/w/(.*)': {
-            target: 'http://localhost:8090/w/$1',
+            target: [{
+              url: 'http://localhost:8090/w/$1',
+              check: {
+                path: '/health'
+              },
+            }],
             agent: 'default'
           },
         }

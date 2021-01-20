@@ -58,25 +58,32 @@ const config = {
 //        wirelog: true,
         routes: {
           '/a/(.*)': {
-            target: ['http://localhost:28090/st/$1', 'http://localhost:28090/st/510']
+            target: ['http://localhost:28090/st/$1', 'http://localhost:28090/st/510'],
+            lb: 'seq'
           },
           '/b/(.*)': {
-            target: ['http://localhost:19999/st/$1', 'http://localhost:28090/st/$1', 'http://localhost:28090/st/510']
+            target: ['http://localhost:19999/st/$1', 'http://localhost:28090/st/$1', 'http://localhost:28090/st/510'],
+            lb: 'seq'
           },
           '/c/(.*)': {
-            target: ['http://localhoster:28090/st/$1', 'http://localhost:28090/st/$1', 'http://localhost:28090/st/510']
+            target: ['http://localhoster:28090/st/$1', 'http://localhost:28090/st/$1', 'http://localhost:28090/st/510'],
+            lb: 'seq'
           },
           '/d/(.*)': {
-            target: ['http://1.1.1.1:28090/st/$1', 'http://localhost:28090/st/$1', 'http://localhost:28090/st/510']
+            target: ['http://1.1.1.1:28090/st/$1', 'http://localhost:28090/st/$1', 'http://localhost:28090/st/510'],
+            lb: 'seq'
           },
           '/e/(.*)': {
-            target: ['http://localhost:28090/hole', 'http://localhost:28090/st/510']
+            target: ['http://localhost:28090/hole', 'http://localhost:28090/st/510'],
+            lb: 'seq'
           },
           '/f/(.*)': {
-            target: ['http://localhost:28090/half-response', 'http://localhost:28090/st/510']
+            target: ['http://localhost:28090/half-response', 'http://localhost:28090/st/510'],
+            lb: 'seq'
           },
           '/g/(.*)': {
-            target: ['http://localhost:28090/never-respond', 'http://localhost:28090/st/510']
+            target: ['http://localhost:28090/never-respond', 'http://localhost:28090/st/510'],
+            lb: 'seq'
           },
           '/h/(.*)': {
             target: [

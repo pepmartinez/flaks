@@ -1,9 +1,11 @@
 # Flaks: instrumented reverse proxy
+
 Flaks is a reverse proxy with emphasis on instrumentation and traffic introspection. It is designed to serve at the edge, as proxy for outgoing HTTP traffic
 
 In this sort of scenario monitoring is paramount, and so is to be able to peek on the specific req and res being proxied
 
 # Features at a glance
+
 * **Building Blocks**: uses [http-proxy](https://www.npmjs.com/package/http-proxy) as proxy core, wich is very well tested and stable; uses also standard node.js modules for http server and http/https agents. All options and features on the building blocks are exposed for use
 * **TLS Termination**: To provide HTTP->HTTPS proxying, Flaks supports all https/tls options available at http-proxy and https agents (including CA and client certificates)
 * **Virtual Hosts**: host-based virtual hosts are spported, to provide isolated proxies selectable by `Host:` header
@@ -11,9 +13,12 @@ In this sort of scenario monitoring is paramount, and so is to be able to peek o
 * **Prometheus Metrics**: fully instrumented (using [promster](https://www.npmjs.com/package/@promster/express)) at http server and http client side
 * **req/res introspection**: keeps a circular buffer of the last HTTP transactions, per upstream
 * **Zero Downtime deployment**: Flaks can be reloaded (using [pm2 cluster mode](https://pm2.keymetrics.io/docs/usage/cluster-mode/)) whie run inside a Docker container; additionally, it provides graceful start and shutdown
+* HA/LB: High availability & Load balancing is provided on upstreams with sequential and weighted-random spreading algorithms. Also, active checks can be added to remove failing upstreams from upstream pools
 
 # Configuration
+
 Flaks uses [cascade-config](https://www.npmjs.com/package/cascade-config) for configuration support. It is set to read its config from:
+
 * {PWD}/etc/config.js
 * {PWD}/etc/config-{NODE_ENV:development}.js
 * env vars
@@ -26,7 +31,9 @@ Flaks configuration is based on a set of http/https agents, and a set of virtual
 Also, some default values for configuration inside both agents and virtualhosts can be provided
 
 ## HTTP/HTTPS agents
+
 Standard (http and https) node.js agents are defined here and a key is attached to them. The key is used later to refer to agents inside virtualhosts:
+
 ```js
 module.exports = {
   agents : {
@@ -77,11 +84,12 @@ module.exports = {
 
     }
   },
-
 ```
+
 This defines 2 http agents `agent1` and `agent2`, and 2 https agents `agent1` and `agent2`
 
 ## Virtual Hosts
+
 For Flaks, a virtual host is a container for routes, selectable by the content of the `Host:` header:
 
 ```js
@@ -166,27 +174,40 @@ Using the config above, here's what some calls would produce:
 * `GET /c/6666/d/e/f?x=1&z=true` : proxy GET to `https://another.place.org:8090/other/6666/e/f?x=1&z=true`, using https agent `agentA`
 
 ### Errors
+
 * if no route inside the virtualhost matches the request's url path, a http 404 is returned
 * if proxying to a non-listening url (upstream brings a connection refused) a http 503 error is returned
 * if proxying to an upstream with an unknown host (ie, host not known) a http 502 is returned
 * if the upstream fails to respond in time after the request was proxied, a http 504 is returned
 
 ## Network Layer
+
 Flaks allows some TCP layer configuration, both at virtualhost level (inside `vhosts.{id}.net`) or at top level (inside `net`). The supported config is:
+
 * incoming_timeout: time in milliseconds an incoming request will wait to be proxied and answered. Passed to `http-proxy` as `timeout`
 * outgoing_timeout: tiem in milliseconds a proxied request will wait for a response. Passed to `http-proxy` as `proxyTimeout`
 
+## Load Balance & High Availability
+
+### Active Upstream Checks
+
+## Extending Flaks
+
 ## Wire Logs
+
 Flaks can generate wire logs at the upstreams, almost byte-perfect (there are some exceptions) using the config key `wirelog`. This can be specified at top level (as `http.wirelog`) or at the virtualhost (at `vhosts.{id}.http.wirelog`)
 
 `wirelog` supports the following values:
-* `true`: generate wire log for all cases
-* a function `(opts, req) -> boolean`, where `req` is the http request and `opts` is the `options` object received by `http-proxy` at `proxyReq` event. If the function returnd truish, wire log is generated
 
+* `true`: generate wire log for all cases
+
+* a function `(opts, req) -> boolean`, where `req` is the http request and `opts` is the `options` object received by `http-proxy` at `proxyReq` event. If the function returnd truish, wire log is generated
+  
   An example of such function could be
   `(opts, req) => (req.headers['x-wirelog'] == '1')`, which would cause to log all http transactions whose request contains a header `x-wirelog: 1`
 
 Here's an example of wire log for a single request:
+
 ```
 2019-11-27T10:39:42.251Z [wire:upstream] info: 8a6e6fd0-878d-4e54-86d1-b8ffd6971088 > GET /z/something?a=1 HTTP/1.1
 2019-11-27T10:39:42.251Z [wire:upstream] info: 8a6e6fd0-878d-4e54-86d1-b8ffd6971088 > x-forwarded-host: localhost.localdomain
@@ -211,20 +232,25 @@ Here's an example of wire log for a single request:
 ```
 
 ## Introspection
+
 Flaks can also keep a circular buffer of the last 16 http transactions per upstream. This can be activated either globally (with `http.introspect`) or by virtualhost (with `vhosts.{id}.http.introspect`). The `introspect` key accepts the same values than `wirelog`
 
 The contents of the circular buffers can be obtained with a GET to `/status/proxy&v=1`
 
 ## Metrics
+
 Flaks maintain and exports prometheus metrics:
+
 * it uses [@promster/express](https://www.npmjs.com/package/@promster/express) to provide server-side and general node.js metrics
+
 * Flaks also maintains an histogram `http_upstream_request_duration` on upstream calls, with the following labels:
+  
   * method
   * statusCode
   * uri
   * route
   * vhost
-
+  
   The uri is the target url, before being expanded with regex groups (thus avoiding cardinality issues when url paths contain ids or other variable elements)
 
 Metrics are avaialble at `/metrics`
@@ -232,18 +258,23 @@ Metrics are avaialble at `/metrics`
 ## Other
 
 ### X-Request-Id
+
 Flaks adds a UUIDv4 as `x-request-id` on all requests, if none is present. The x-request-id is then preserved at the upstream, and it is used on logs
 
 ### Graceful shutdown
+
 Flaks does graceful shutdown upon SIGINT or SIGTERM signals. Also, the listener is the last thing Flaks starts upon startup, so the moment it is listening, it's ready to be used
 
 ### Cluster Mode
+
 Although it is possible to run Flaks in cluster mode with more than one worker, bear in mind that features such as metrics or introspection are not yet custer-aware
 
 It is OK, however, to run in cluster mode with a single worker; this is the way flaks is run in the docker image, using pm2 as cluster provider. This way, Flaks provides full zero-downtime deployment/reload
 
 ## Defaults
+
 Here are the defauts used by flaks, as a single object:
+
 ```js
   var _defaults = {
     listen_port: 8080,
@@ -275,13 +306,17 @@ Here are the defauts used by flaks, as a single object:
 ```
 
 # Install and run
+
 ## As NPM package:
+
 ```sh
 npm install -g flaks
 ```
+
 Expects configuration inside `$PWD/etc/`
 
 ## As Docker Image
+
 ```sh
 docker run \
   --name=flaks \
@@ -294,17 +329,13 @@ docker run \
 See [here](https://hub.docker.com/repository/docker/pepmartinez/flaks) for more details
 
 # TODO
+
 A concise list of known to-do things (in no particular order):
+
 * more than one listener
 * https listeners
 * http2 support
-+ load balance
-+ retries on upstream errors
-+ active checks
 * circuit breakers
-+ extra middleware
 * req/res manipulation
 * automation/ctrl
 * auth on internal paths (status, metrics)
-* use optional port for target active checks
-
