@@ -18,27 +18,72 @@ module.exports = {
   vhosts: {
     default: {
       http: {
-        wirelog: false,
-        introspect: false,
+//        wirelog: true,
+//        introspect: false,
         routes: {
           '/a/b/c': {
-            target: 'http://xana:8090/a',
+            target: 'http://localhost:8090/a',
             agent: 'default'
           },
           '/b/(.*)' : {
-            target: 'http://xana:8090/hawks/$1',
+            target: 'http://www.hh.se:8090/hawks/$1',
             agent: 'default'
           },
           '/b/c/d/(.*)' : {
-            target: 'http://xana:8090/other/$1',
+            target: 'http://localhost:8090/other/$1',
             agent: 'default'
           },
           '/c/(.*)' : {
-            target: 'http://xana:9099/other/$1',
+            target: 'http://localhost:9099/other/$1',
+            agent: 'default'
+          },
+          '/status/(.*)' : {
+            target: ['http://localhost:8098/st/504', 'http://localhosto:8090/st/$1', 'http://localhost:8090/st/$1' ],
+            lb: 'rand',
+            agent: 'default'
+          },
+          '/lb0/(.*)' : {
+            target: [
+              'http://localhost:8098/st/504',
+              'http://localhosto:8090/st/$1',
+              'http://localhost:8090/st/$1'
+            ],
+            lb: 'rand',
+            agent: 'default'
+          },
+          '/lb/(.*)' : {
+            target: [
+              {
+                url: 'http://localhost:8098/st/$1',
+                check: {
+                  path: '/health'
+                }
+              },
+              {
+                url: 'http://localhosto:8090/st/$1',
+                check: {
+                  path: '/health'
+                }
+              },
+              {
+                url: 'http://www.hh.se:8090/st/$1',
+                check: {
+                  path: '/health',
+                  port: 80
+                }
+              },
+              {
+                url: 'http://localhost:8090/st/$1',
+                check: {
+                  path: '/health'
+                }
+              },
+            ],
+            // lb: [seq|spread|rr]
             agent: 'default'
           },
           '/g/(.*)' : {
-            target: 'https://www.google.com/$1',
+            target: 'http://www.google.com/$1',
             agent: 'default'
           },
           '/s/(.*)' : {
@@ -48,6 +93,9 @@ module.exports = {
         }
       },
       net: {
+        incoming_timeout: 14000,
+        outgoing_timeout: 15000,
+        connect_timeout:  3000,
       }
     },
     'localhost.localdomain': {
@@ -57,11 +105,21 @@ module.exports = {
         introspect: true,
         routes: {
           '/z(.*)': {
-            target: 'http://xana:8090/z/$1',
+            target: [{
+              url: 'http://localhost:8090/z/$1',
+              check: {
+                path: '/health'
+              },
+            }],
             agent: 'default'
           },
           '/w/(.*)': {
-            target: 'http://xana:8090/w/$1',
+            target: [{
+              url: 'http://localhost:8090/w/$1',
+              check: {
+                path: '/health'
+              },
+            }],
             agent: 'default'
           },
         }

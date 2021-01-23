@@ -10,7 +10,7 @@ module.exports = {
 //    outgoing_timeout: 21000
   },
   http: {
-    wirelog: (opts, req) => (req.headers.aaaa == '1'),
-    introspect: true,
+//    wirelog: (opts, req) => (req.headers.aaaa == '1'),
+//    introspect: true,
   }
 };

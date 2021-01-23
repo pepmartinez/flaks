@@ -13,7 +13,7 @@ In this sort of scenario monitoring is paramount, and so is to be able to peek o
 * **Prometheus Metrics**: fully instrumented (using [promster](https://www.npmjs.com/package/@promster/express)) at http server and http client side
 * **req/res introspection**: keeps a circular buffer of the last HTTP transactions, per upstream
 * **Zero Downtime deployment**: Flaks can be reloaded (using [pm2 cluster mode](https://pm2.keymetrics.io/docs/usage/cluster-mode/)) whie run inside a Docker container; additionally, it provides graceful start and shutdown
-* HA/LB: High availability & Load balancing is provided on upstreams with sequential and weighted-random spreading algorithms. Also, active checks can be added to remove failing upstreams from upstream pools
+* **HA/LB**: High availability & Load balancing is provided on upstreams with sequential and weighted-random spreading algorithms. Also, active checks can be added to remove failing upstreams from pools
 
 # Configuration
 
@@ -187,9 +187,69 @@ Flaks allows some TCP layer configuration, both at virtualhost level (inside `vh
 * incoming_timeout: time in milliseconds an incoming request will wait to be proxied and answered. Passed to `http-proxy` as `timeout`
 * outgoing_timeout: tiem in milliseconds a proxied request will wait for a response. Passed to `http-proxy` as `proxyTimeout`
 
-## Load Balance & High Availability
+## Upstream Load Balance & High Availability
 
-### Active Upstream Checks
+Flaks can specify a set of targets instead of a single target in a route definition:
+
+```js
+vhosts: {
+  default: {
+    http: {
+      routes: {
+        '/lb0/(.*)' : {
+          target: [
+            'http://localhost:8098/st/504',
+            'http://localhosto:8090/st/$1',
+            'http://localhost:8090/st/$1'
+          ],
+          lb: seq|rand
+          agent: 'default'
+        }
+      }
+    }
+  }
+}
+```
+
+If more than one target is specified flaks will build a sequence of targets to try, and will try the http request on each in turn, until flaks can connect and send the request to it. 
+
+The ordering in the sequence of targets to try is build afresh on each http request, and depends on the value of `routes.<route>. lb`:
+
+* `seq`will take targets in the order they are declared (thus would map to active-standby)
+
+* `rand` will impose a random ordering (which would map to a load balance)
+
+An individual target can also be an object rather than a string, which allows the specification of more target-related aspects:
+
+```js
+routes: {
+  '/lb0/(.*)' : {
+    target: [{
+      url: 'http://host1:8090t/$1',
+      w: 2,
+      check: {
+        path: '/health',
+        port: 80
+      }
+    },{
+      url: 'http://host2:8090/st/$1',
+      w: 6,
+      check: {
+        path: '/health',
+        port: 80
+      }
+    }
+```
+
+`w` specifies the weight of the target in the ordering of the targets for `rand` schema. It default to 1
+
+`check`declares an active check on the target. If specified, flaks will call the target using the specified path every 5 seconds; the target is deemed healthy is it returns an HTTP 200; otherwise it is deemed unhealthy and it will not be eligible for the sequence of targets
+
+* `check.path` must be specified
+
+* `check.port` allows to specify a specific port for the check; if not specified, the target port will be used
+
+The transitions from healthy to unhealthy on a target will not impact on the ongoing http transactions to this targets: it will only impact on whether the target is considered or not for new http transactions
 
 ## Extending Flaks
 
