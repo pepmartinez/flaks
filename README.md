@@ -253,6 +253,111 @@ The transitions from healthy to unhealthy on a target will not impact on the ong
 
 ## Extending Flaks
 
+`flaks` uses internally [express](https://expressjs.com) to build the listening http server, and it is possible to pass extra middlewares that would get added to the express `app` upon startup:
+
+```js
+{
+  agents: {
+    ...
+  },
+  vhosts: {
+    ...
+  },
+  extra_middlewares: [{
+    path: '/a',
+    mws: [ bodyParser.json (), new OneMW() ]
+  }, {
+    path: '/b',
+    mws: [ bodyParser.json (), new OneMW() ]
+  }]
+};
+
+
+```
+
+Each middleware block consists on a path to apply the middleware to and an array of actual middlewares. Alternatively, instead of a middleware you can pass a middleware factory:
+
+```js
+const mwFactory = require ('./mw-factory')
+
+extra_middlewares: [{
+  path : '/c',
+  mws: [bodyParser.json (), mwFactory]    
+}]
+```
+
+```js
+// mw-factory.js
+
+class MW {
+  constructor (opts) {
+    // opts are the full configuration received by flaks
+    ...
+  }    
+
+  id () {return 'some MW'}
+  init (cb) {
+    // get a mongodb connection, for example
+    this._get mongodb (() => cb)
+  }
+  end (cb) {
+    this._teardown (() => cb)  
+  }
+  mw () {
+    return function (req, res, next) {
+      ...
+    }  
+  }
+}
+
+
+module.exports = MW;
+
+```
+
+the factory is expected to have a `mw()` function which would create the actual middleware; also, it can optionally have the following lifecycle functions:
+
+* `init(cb)`: it will be called asynchronoulsy after all `flaks` internal components are created. it will run, in fact, as part of the internal flow of initialization
+
+* `end(cb)`: it will be called asynchronously as part of flaks teardown process. You can use this to free resources
+
+* `id()`: if present, it should return an string. It would be used to identify the MW internally, and in logging
+
+### Flaks as a library component
+
+It is possible to use `flaks` as a library component in your node.js code: in a nutshell:
+
+* you will get all flaks, which is basically an express app and a http server; you can add extra middlewares to the internal express app upon creation, as part of the configuration passed
+
+* you are free to further tweak the resulting app and http-server
+
+* you run the whole thing
+
+```js
+const flaks = require ('flaks/main');
+const config = {
+  agents: {
+    ...
+  },
+  vhosts: {
+    ...
+  },
+  extra_middlewares: [
+    ...  
+  ]
+};
+
+flaks.run (config, (err, context) => {
+  // context contains, amongst others:
+  // app: the full express app
+  // server: the http server
+});
+```
+
+The `flaks.run()` method will execute the full flaks, including setting the shutdown process tied to `SIGINT` and `SIGTERM` signals
+
+For a full example with log initialization and config management you can check flaks' own [index.js]([https://github.com/pepmartinez/flaks/blob/master/index.js)
+
 ## Wire Logs
 
 Flaks can generate wire logs at the upstreams, almost byte-perfect (there are some exceptions) using the config key `wirelog`. This can be specified at top level (as `http.wirelog`) or at the virtualhost (at `vhosts.{id}.http.wirelog`)
