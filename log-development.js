@@ -1,7 +1,7 @@
 
 module.exports = {
   level: {
-    default: 'verbose',
+    default: 'info',
     access: 'info'
   },
 };

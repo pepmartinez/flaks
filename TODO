@@ -11,4 +11,5 @@
   + full API on all vhosts?
 * add health/ready endpoint
 * wildcards or regex on vhost select
+* use mnemonist/TrieMap to match upstreams
 
