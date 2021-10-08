@@ -156,7 +156,6 @@ describe("HTTPS upstream", () => {
                 "content-length": "12",
                 "x-request-id": "qwertyuiop",
                 "content-type": "text/plain",
-                "user-agent": /node-superagent/,
                 "accept-encoding": /.+/,
                 host: "localhost:28090"
               },
@@ -238,7 +237,6 @@ describe("HTTPS upstream", () => {
                 "content-length": "12",
                 "x-request-id": "qwertyuiop",
                 "content-type": "text/plain",
-                "user-agent": /node-superagent/,
                 "accept-encoding": /.+/,
                 host: "localhost:28090"
               },

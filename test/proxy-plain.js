@@ -192,7 +192,6 @@ describe("Simple Routes, no agents", () => {
             "content-length": "12",
             "x-request-id": "qwertyuiop",
             "content-type": "text/plain",
-            "user-agent": "node-superagent/3.8.3",
             "accept-encoding": "gzip, deflate",
             host: /localhost:.+/
           });

@@ -152,7 +152,6 @@ describe("introspection", () => {
 //          console.log (require('util').inspect (context.proxy.status (true), {depth: null, colors: true}));
 
           const status = context.proxy.status(true);
-
           status.default['http://localhost:666/other/$1'].should.match({
                 ECONNREFUSED: [
                   {
@@ -170,7 +169,6 @@ describe("introspection", () => {
                       connection: "close",
                       "content-length": "12",
                       "content-type": "text/plain",
-                      "user-agent": /.+/,
                       host: "localhost:666",
                       "x-request-id": /.+/
                       },
@@ -204,7 +202,6 @@ describe("introspection", () => {
                       connection: "close",
                       "content-length": "12",
                       "content-type": "text/plain",
-                      "user-agent": /.+/,
                       host: "noexistent-host.org:666",
                       "x-request-id": /.+/
                       },
@@ -238,7 +235,6 @@ describe("introspection", () => {
                       "content-length": "12",
                       "x-request-id": "qwertyuiop",
                       "content-type": "text/plain",
-                      "user-agent": /.+/,
                       host: "localhost:28090"
                       },
                       body: 'ddfgdgdgdgdf'
@@ -250,7 +246,7 @@ describe("introspection", () => {
                       headers: {
                         "x-powered-by": "Express",
                         "content-type": "application/json; charset=utf-8",
-                        "content-length": "398",
+                        "content-length": "361",
                         etag: /.+/,
                         date: /.+/,
                         connection: "close"
@@ -274,7 +270,6 @@ describe("introspection", () => {
                       "content-length": "12",
                       "x-request-id": "asdfghjkl",
                       "content-type": "text/plain",
-                      "user-agent": /.+/,
                       host: "localhost:28090"
                       },
                       body: 'ddfgdgdgdgdf'
@@ -286,7 +281,7 @@ describe("introspection", () => {
                       headers: {
                         "x-powered-by": "Express",
                         "content-type": "application/json; charset=utf-8",
-                        "content-length": "397",
+                        "content-length": "360",
                         etag: /.+/,
                         date: /.+/,
                         connection: "close"
@@ -369,7 +364,6 @@ describe("introspection", () => {
                       connection: "close",
                       "content-length": "12",
                       "content-type": "text/plain",
-                      "user-agent": /.+/,
                       host: "localhost:666",
                       "x-request-id": /.+/
                       },
@@ -403,7 +397,6 @@ describe("introspection", () => {
                       connection: "close",
                       "content-length": "12",
                       "content-type": "text/plain",
-                      "user-agent": /.+/,
                       host: "noexistent-host.org:666",
                       "x-request-id": /.+/
                       },
@@ -437,7 +430,6 @@ describe("introspection", () => {
                       "content-length": "12",
                       "x-request-id": "qwertyuiop",
                       "content-type": "text/plain",
-                      "user-agent": /.+/,
                       host: "localhost:28090"
                       },
                       body: 'ddfgdgdgdgdf'
@@ -449,7 +441,7 @@ describe("introspection", () => {
                       headers: {
                         "x-powered-by": "Express",
                         "content-type": "application/json; charset=utf-8",
-                        "content-length": "403",
+                        "content-length": "366",
                         etag: /.+/,
                         date: /.+/,
                         connection: "keep-alive"
@@ -473,7 +465,6 @@ describe("introspection", () => {
                       "content-length": "12",
                       "x-request-id": "asdfghjkl",
                       "content-type": "text/plain",
-                      "user-agent": /.+/,
                       host: "localhost:28090"
                       },
                       body: 'ddfgdgdgdgdf'
@@ -485,7 +476,7 @@ describe("introspection", () => {
                       headers: {
                         "x-powered-by": "Express",
                         "content-type": "application/json; charset=utf-8",
-                        "content-length": "402",
+                        "content-length": "365",
                         etag: /.+/,
                         date: /.+/,
                         connection: "keep-alive"

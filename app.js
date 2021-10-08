@@ -35,9 +35,9 @@ module.exports = function  (opts, context, done) {
     }
   }));
 
-  app.use('/metrics', (req, res) => {
+  app.use('/metrics', async (req, res) => {
     res.setHeader ('Content-Type', promster.getContentType());
-    res.end (promster.getSummary());
+    res.end (await promster.getSummary());
   });
 
   async.series ([
