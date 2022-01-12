@@ -175,7 +175,6 @@ describe("introspection", () => {
                       body: ''
                     },
                     err: {
-                      errno: "ECONNREFUSED",
                       code: "ECONNREFUSED",
                       syscall: "connect",
                       address: "127.0.0.1",
@@ -208,7 +207,6 @@ describe("introspection", () => {
                       body: ''
                     },
                     err: {
-                      errno: "ENOTFOUND",
                       code: "ENOTFOUND",
                       syscall: "getaddrinfo",
                       hostname: "noexistent-host.org",
@@ -370,7 +368,6 @@ describe("introspection", () => {
                       body: ''
                     },
                     err: {
-                      errno: "ECONNREFUSED",
                       code: "ECONNREFUSED",
                       syscall: "connect",
                       address: "127.0.0.1",
@@ -403,7 +400,6 @@ describe("introspection", () => {
                       body: ''
                     },
                     err: {
-                      errno: "ENOTFOUND",
                       code: "ENOTFOUND",
                       syscall: "getaddrinfo",
                       hostname: "noexistent-host.org",

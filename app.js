@@ -21,9 +21,6 @@ module.exports = function  (opts, context, done) {
     app.set ('trust proxy', opts.http && opts.http.trust_proxy);
   }
 
-  app.use (addRequestId ());
-  app.use (AccessLog (opts));
-
   app.use (promster.createMiddleware({
     app: app,
     options: {
@@ -39,6 +36,9 @@ module.exports = function  (opts, context, done) {
     res.setHeader ('Content-Type', promster.getContentType());
     res.end (await promster.getSummary());
   });
+
+  app.use (addRequestId ());
+  app.use (AccessLog (opts));
 
   async.series ([
     cb => routes_status (opts, context, (err, router) => {
