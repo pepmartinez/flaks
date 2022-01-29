@@ -1,5 +1,5 @@
-# docker build -t pepmartinez/flaks:1.1.4 .
-# docker push pepmartinez/flaks:1.1.4
+# docker build -t pepmartinez/flaks:1.1.5 .
+# docker push pepmartinez/flaks:1.1.5
 
 FROM node:14.15.2-buster-slim as builder
 
