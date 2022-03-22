@@ -1,7 +1,7 @@
 {
   "name": "flaks",
   "description": "reverse http/https proxy optimized for edge/outgoing traffic",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "keywords": [
     "proxy",
     "reverse",
@@ -24,14 +24,14 @@
   "license": "GPL-3.0",
   "dependencies": {
     "@pepmartinez/http-proxy": "~1.18.2",
-    "@promster/express": "~7.0.3",
+    "@promster/express": "~7.0.4",
     "async": "~3.2.3",
-    "body-parser": "~1.19.0",
-    "cascade-config": "~1.5.5",
+    "body-parser": "~1.19.2",
+    "cascade-config": "~1.5.6",
     "CBuffer": "~2.1.0",
     "chance": "~1.1.8",
-    "debug": "~4.3.3",
-    "express": "~4.17.2",
+    "debug": "~4.3.4",
+    "express": "~4.17.3",
     "express-request-id": "~1.4.1",
     "http-shutdown": "~1.2.2",
     "into-stream": "~6.0.0",
@@ -39,11 +39,11 @@
     "morgan": "~1.10.0",
     "prom-client": "~14.0.1",
     "simple-get": "~4.0.1",
-    "winston": "~3.2.1",
-    "winston-log-space": "~1.0.6"
+    "winston": "~3.6.0",
+    "winston-log-space": "~1.0.7"
   },
   "devDependencies": {
-    "mocha": "~9.2.0",
+    "mocha": "~9.2.2",
     "should": "~13.2.3",
     "supertest": "~6.2.2"
   },
