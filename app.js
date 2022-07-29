@@ -16,7 +16,10 @@ module.exports = function  (opts, context, done) {
   var routes_status = require ('./routes/status');
 
   var app = express();
-
+  
+  app.set ('etag', false);
+  app.set ('x-powered-by', false);
+  
   if (opts.http && opts.http.trust_proxy) {
     app.set ('trust proxy', opts.http && opts.http.trust_proxy);
   }
