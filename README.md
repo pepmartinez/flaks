@@ -436,6 +436,9 @@ Although it is possible to run Flaks in cluster mode with more than one worker, 
 
 It is OK, however, to run in cluster mode with a single worker; this is the way flaks is run in the docker image, using pm2 as cluster provider. This way, Flaks provides full zero-downtime deployment/reload
 
+### Access log
+`flaks` generates by default an access_log on a fixed format; for now, it can be only enabled or disabled by means of `http.access_log = <bool>`. It is enabled by default
+
 ## Defaults
 
 Here are the defauts used by flaks, as a single object:
@@ -443,6 +446,9 @@ Here are the defauts used by flaks, as a single object:
 ```js
   var _defaults = {
     listen_port: 8080,
+    http: {
+      access_log: true
+    },
     agents: {
       http: {
         default : {

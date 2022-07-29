@@ -38,8 +38,11 @@ module.exports = function  (opts, context, done) {
   });
 
   app.use (addRequestId ());
-  app.use (AccessLog (opts));
 
+  if (opts.http && opts.http.access_log) {
+    app.use (AccessLog (opts));
+  }
+  
   async.series ([
     cb => routes_status (opts, context, (err, router) => {
       if (err) return cb (err);

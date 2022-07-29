@@ -1,6 +1,9 @@
 var fs = require ('fs');
 
 module.exports = {
+  http: {
+//    access_log: false
+  },
   agents : {
     https: {
       dolkaren: {

@@ -13,6 +13,9 @@ Log.init (function (err) {
 
   var _defaults = {
     listen_port: 8080,
+    http: {
+      access_log: true
+    },
     agents: {
       http: {
         default : {
