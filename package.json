@@ -1,7 +1,7 @@
 {
   "name": "flaks",
   "description": "reverse http/https proxy optimized for edge/outgoing traffic",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "keywords": [
     "proxy",
     "reverse",
@@ -43,9 +43,9 @@
     "winston-log-space": "~1.0.7"
   },
   "devDependencies": {
-    "mocha": "~9.2.2",
+    "mocha": "~10.2.0",
     "should": "~13.2.3",
-    "supertest": "~6.2.2"
+    "supertest": "~6.3.3"
   },
   "bin": {
     "flaks": "./index.js"
