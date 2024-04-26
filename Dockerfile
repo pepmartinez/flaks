@@ -1,10 +1,10 @@
-# docker build -t pepmartinez/flaks:1.1.10 .
-# docker push pepmartinez/flaks:1.1.10
+# docker build -t pepmartinez/flaks:1.1.11 .
+# docker push pepmartinez/flaks:1.1.11
 
-FROM node:14.15.2-buster-slim as builder
+FROM node:20-slim as builder
 
 RUN apt-get update && \
-    apt-get install -y build-essential python && \
+    apt-get install -y build-essential python3 && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/src/app
@@ -14,7 +14,7 @@ RUN npm install --only=production
 
 
 # final image
-FROM node:14.15.2-buster-slim
+FROM node:20-slim
 
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/node_modules ./node_modules
